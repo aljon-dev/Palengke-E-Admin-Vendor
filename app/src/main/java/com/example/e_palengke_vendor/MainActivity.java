@@ -1,17 +1,22 @@
 package com.example.e_palengke_vendor;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.credentials.Credential;
 import android.os.Bundle;
 import android.service.credentials.CredentialEntry;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -33,6 +38,10 @@ public class MainActivity extends AppCompatActivity {
     FirebaseAuth Auth;
 
 
+    Button GoogleBtn;
+
+
+    final int RC_SignIn = 20;
 
 
     @Override
@@ -54,7 +63,17 @@ public class MainActivity extends AppCompatActivity {
 
         gsc = GoogleSignIn.getClient(this, gso);
 
-        //Login
+        //Google Login
+        GoogleBtn = findViewById(R.id.GoogleSignin);
+        GoogleBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SignIn();
+
+            }
+        });
+
+
 
 
 
@@ -85,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     private void UserLogin(String user, String password){
@@ -107,12 +125,32 @@ public class MainActivity extends AppCompatActivity {
                   Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
               }
           }
-
       });
+    }
 
+    private void SignIn(){
+        Intent intent = gsc.getSignInIntent();
+        startActivityForResult(intent,RC_SignIn);
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == RC_SignIn){
+            Task <GoogleSignInAccount> task  =  GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                FirebaseAuth(account.getIdToken());
+
+            } catch (ApiException e) {
+                throw new RuntimeException(e);
+            }
 
 
+        }
+
+
+
+    }
 }

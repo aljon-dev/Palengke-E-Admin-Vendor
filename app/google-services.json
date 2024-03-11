@@ -1,0 +1,77 @@
+{
+  "project_info": {
+    "project_number": "183891219096",
+    "firebase_url": "https://e-streets-a2a81-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "e-streets-a2a81",
+    "storage_bucket": "e-streets-a2a81.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:183891219096:android:8f52f3b306d3ce0d7436ed",
+        "android_client_info": {
+          "package_name": "com.example.e_palengke_vendor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "183891219096-odedevc2p1aaac3h4875lpskq05i3mac.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBRFafdK3csTu8zGw0QQvfPNA-44JrSfQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "183891219096-odedevc2p1aaac3h4875lpskq05i3mac.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:183891219096:android:c04f694d523ee9407436ed",
+        "android_client_info": {
+          "package_name": "com.example.e_streets"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "183891219096-e2ioj8c6vgjrfuismdjjuli52io29rfd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.e_streets",
+            "certificate_hash": "c5c23b1bc3d0c7059a8aa07c793628c6828ae057"
+          }
+        },
+        {
+          "client_id": "183891219096-odedevc2p1aaac3h4875lpskq05i3mac.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBRFafdK3csTu8zGw0QQvfPNA-44JrSfQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "183891219096-odedevc2p1aaac3h4875lpskq05i3mac.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

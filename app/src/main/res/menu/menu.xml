@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/Group1"
+
+
+        >
+
+
+
+        <item
+            android:id="@+id/NavHome"
+            android:title="Home">
+
+        </item>
+
+        <item
+            android:id="@+id/NavAccount"
+            android:title="Account">
+
+        </item>
+
+        <item
+            android:id="@+id/NavSettings"
+            android:title="Settings">
+
+        </item>
+
+        <item
+            android:id="@+id/NavCart"
+            android:title="Cart">
+
+        </item>
+    </group>
+
+    <group android:id="@+id/group2">
+
+        <item
+            android:id="@+id/LogOut"
+            android:title="Log Out ">
+
+        </item>
+
+
+    </group>
+
+
+
+
+</menu>

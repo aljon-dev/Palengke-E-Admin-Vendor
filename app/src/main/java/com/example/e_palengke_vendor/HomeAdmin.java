@@ -95,8 +95,6 @@ public class HomeAdmin extends AppCompatActivity {
                             .into(imageView);
                 }
 
-
-
             }
 
             @Override

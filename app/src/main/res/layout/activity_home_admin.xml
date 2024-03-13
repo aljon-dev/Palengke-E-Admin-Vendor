@@ -8,7 +8,7 @@
 
     tools:context=".HomeAdmin">
     <include
-        layout="@layout/activity_home_content"
+        layout="@layout/activty_navbar"
         />
 
     <com.google.android.material.navigation.NavigationView

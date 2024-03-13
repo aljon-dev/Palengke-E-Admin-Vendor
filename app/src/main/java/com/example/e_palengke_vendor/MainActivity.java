@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.service.credentials.CredentialEntry;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
 
     Button GoogleBtn;
 
+    TextView  register;
+
 
     final int RC_SignIn = 20;
 
@@ -48,6 +51,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //TextView   Tap Register
+
+        register = findViewById(R.id.tapregister);
+
+
+        //Google Login
+        GoogleBtn = findViewById(R.id.GoogleSignin);
+
 
 
         //Firebase database
@@ -63,8 +75,20 @@ public class MainActivity extends AppCompatActivity {
 
         gsc = GoogleSignIn.getClient(this, gso);
 
-        //Google Login
-        GoogleBtn = findViewById(R.id.GoogleSignin);
+
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,Register.class);
+                startActivity(intent);
+            }
+        });
+
+
+
+
+
+
         GoogleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,8 +118,7 @@ public class MainActivity extends AppCompatActivity {
                     users.setName(user.getDisplayName());
                     users.setProfile(String.valueOf(user.getPhotoUrl()));
 
-
-                    database.getReference().child("admin").child(users.getUserId()).setValue(users);
+                    database.getReference().child("vendor").child(users.getUserId()).setValue(users);
 
                     Intent intent = new Intent(MainActivity.this, HomeAdmin.class);
                     intent.putExtra("id",users.getUserId());
@@ -127,6 +150,8 @@ public class MainActivity extends AppCompatActivity {
           }
       });
     }
+
+    // Void SignIn
 
     private void SignIn(){
         Intent intent = gsc.getSignInIntent();

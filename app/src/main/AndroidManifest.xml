@@ -4,11 +4,10 @@
 
     <uses-feature
         android:name="android.hardware.camera"
-        android:required="false" />
+        android:required="false"/>
 
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
 
     <application
@@ -21,8 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EPalengke_Vendor"
         tools:targetApi="31">
-        <activity android:name=".AddProduct"
-            android:exported="false"/>
+        <activity
+            android:name=".Register"
+            android:exported="false" />
         <activity
             android:name=".HomeAdmin"
             android:exported="false" />
@@ -32,7 +32,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+
             </intent-filter>
         </activity>
     </application>

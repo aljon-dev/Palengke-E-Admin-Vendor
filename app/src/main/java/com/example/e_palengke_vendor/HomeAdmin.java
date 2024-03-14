@@ -24,7 +24,7 @@ public class HomeAdmin extends AppCompatActivity {
 
     FirebaseDatabase database;
 
-    ImageView navBtn,imageView;
+    ImageView imageView;
 
 
     DrawerLayout  drawer;
@@ -48,12 +48,11 @@ public class HomeAdmin extends AppCompatActivity {
         //Navigation
         drawer = findViewById(R.id.slidedraw);
         nav = findViewById(R.id.navigationMenu);
-        navBtn = findViewById(R.id.imageBtn);
 
         //ImageButton to appear Drawer navigation
         View header = nav.getHeaderView(0);
 
-        imageView = header.findViewById(R.id.photos);
+        imageView = header.findViewById(R.id.imageBtn);
         nametxt = header.findViewById(R.id.nametext);
 
 
@@ -61,16 +60,13 @@ public class HomeAdmin extends AppCompatActivity {
         String Uid = getIntent().getStringExtra("id");
         NavigationUser(Uid);
 
-        navBtn = findViewById(R.id.imageBtn);
 
-        navBtn.setOnClickListener(new View.OnClickListener() {
+        imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 drawer.open();
             }
         });
-
-
 
 
 
@@ -98,8 +94,6 @@ public class HomeAdmin extends AppCompatActivity {
                             .circleCrop()
                             .into(imageView);
                 }
-
-
 
             }
 

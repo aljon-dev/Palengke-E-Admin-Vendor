@@ -34,7 +34,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.50"
-                app:srcCompat="@drawable/estreetslogo" />
+                app:srcCompat="@drawable/palengkee" />
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView"
                 android:layout_width="match_parent"
@@ -55,10 +55,10 @@
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="120dp"
+                    android:layout_marginStart="105dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="10dp"
-                    android:text="ADMIN"
+                    android:text="VENDOR"
 
                     android:textColor="@color/white"
                     android:textFontWeight="600"
@@ -120,7 +120,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
-                            android:text="Applying as Admin?"
+                            android:text="Applying as Vendor?"
                             android:textColor="@color/white"
                             android:textSize="20dp" />
 

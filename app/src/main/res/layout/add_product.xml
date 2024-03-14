@@ -2,12 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="20dp"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="20dp">
 
     <EditText
         android:id="@+id/prodName"
         android:hint="Product Name"
+        android:drawableLeft="@drawable/baseline_drive_file_rename_outline_24"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"/>
@@ -15,6 +16,7 @@
     <EditText
         android:id="@+id/prodDesc"
         android:layout_below="@id/prodName"
+        android:drawableLeft="@drawable/baseline_description_24"
         android:hint="Description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,7 +27,7 @@
         android:hint="Category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableEnd="@drawable/baseline_keyboard_arrow_down_24"
+        android:drawableEnd="@drawable/baseline_arrow_drop_down_24"
         android:drawableStart="@drawable/baseline_format_list_bulleted_24"
         android:drawablePadding="10dp"
         android:layout_marginBottom="20dp"/>
@@ -57,21 +59,24 @@
 
 
 
-    <ImageView
-        android:id="@+id/imgView"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@mipmap/ic_launcher"/>
+        <ImageView
+            android:id="@+id/imgView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@mipmap/ic_launcher"/>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
+            android:layout_marginLeft="10dp"
+            app:cornerRadius="0dp"
             android:id="@+id/pickImg"
-            android:layout_width="120dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Upload Image" />
     </LinearLayout>
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:layout_marginTop="20dp"
         android:layout_below="@+id/layout1"
+        app:cornerRadius="0dp"
         android:id="@+id/addProduct"
         android:text="Add Product"
         android:layout_width="match_parent"

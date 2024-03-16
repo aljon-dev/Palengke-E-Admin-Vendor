@@ -3,8 +3,12 @@ package com.example.e_palengke_vendor;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,13 +22,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class HomeAdmin extends AppCompatActivity {
+public class HomeAdmin extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     FirebaseAuth auth;
 
     FirebaseDatabase database;
 
-    ImageView imageView;
+    ImageView imageView, Btn;
 
 
     DrawerLayout  drawer;
@@ -32,6 +36,9 @@ public class HomeAdmin extends AppCompatActivity {
     NavigationView nav;
 
     TextView nametxt;
+
+
+    FragmentManager fragmentManager;
 
 
 
@@ -52,7 +59,9 @@ public class HomeAdmin extends AppCompatActivity {
         //ImageButton to appear Drawer navigation
         View header = nav.getHeaderView(0);
 
-        imageView = header.findViewById(R.id.imageBtn);
+
+
+        imageView = header.findViewById(R.id.photos);
         nametxt = header.findViewById(R.id.nametext);
 
 
@@ -60,16 +69,23 @@ public class HomeAdmin extends AppCompatActivity {
         String Uid = getIntent().getStringExtra("id");
         NavigationUser(Uid);
 
+        //nav bar Btn
+        Btn = findViewById(R.id.imageBtn);
 
-        imageView.setOnClickListener(new View.OnClickListener() {
+        Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 drawer.open();
             }
         });
 
+        //Navigation
+        nav.setNavigationItemSelectedListener(this);
 
+        //Fragmentmanager
 
+      fragmentManager = getSupportFragmentManager();
+        replaceFragment(new HomeFragment());
 
 
     }
@@ -103,6 +119,39 @@ public class HomeAdmin extends AppCompatActivity {
             }
         });
 
+
+
+
+    }
+
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int items = item.getItemId();
+        if(items == R.id.NavHome){
+            replaceFragment(new HomeFragment());
+        }else if(items == R.id.NavAccount){
+            replaceFragment(new AccountFragment());
+        }else if(items == R.id.NavAddProduct){
+            replaceFragment(new AddProduct_Fragment());
+        }else if(items == R.id.NavHistory){
+            replaceFragment(new HistoryFragment());
+        }else if(items == R.id.NavDelivered){
+            replaceFragment(new DeliveredFragment());
+        }
+
+
+
+
+
+        return false;
+    }
+
+    private void replaceFragment(Fragment fragment){
+        FragmentManager Fragment = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = Fragment.beginTransaction();
+        fragmentTransaction.replace(R.id.frameLayout,fragment);
+        fragmentTransaction.commit();
 
 
 

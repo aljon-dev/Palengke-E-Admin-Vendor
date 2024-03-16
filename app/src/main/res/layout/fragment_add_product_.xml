@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="20dp">
+    android:layout_marginTop="60dp"
+    tools:context=".AddProduct_Fragment">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:layout_margin="20dp">
+
+    <!-- TODO: Update blank fragment layout -->
     <EditText
         android:id="@+id/prodName"
         android:hint="Product Name"
@@ -80,7 +89,6 @@
         android:id="@+id/addProduct"
         android:text="Add Product"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-
-</RelativeLayout>
+        android:layout_height="wrap_content" />
+    </RelativeLayout>
+</FrameLayout>

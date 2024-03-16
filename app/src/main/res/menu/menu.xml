@@ -15,6 +15,9 @@
 
         </item>
 
+
+
+
         <item
             android:id="@+id/NavAccount"
             android:title="Account">
@@ -22,14 +25,22 @@
         </item>
 
         <item
-            android:id="@+id/NavSettings"
-            android:title="Settings">
+            android:id="@+id/NavAddProduct"
+            android:title="Add Product">
+
+        </item>
+
+
+
+        <item
+            android:id="@+id/NavHistory"
+            android:title="History">
 
         </item>
 
         <item
-            android:id="@+id/NavCart"
-            android:title="Cart">
+            android:id="@+id/NavDelivered"
+            android:title="Delivered">
 
         </item>
     </group>

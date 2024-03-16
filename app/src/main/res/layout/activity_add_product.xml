@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddProduct">
+
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent" android:layout_margin="20dp"> <!-- TODO: Update blank fragment layout --> <EditText android:id="@+id/prodName" android:hint="Product Name" android:drawableLeft="@drawable/baseline_drive_file_rename_outline_24"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"/>
+        <EditText android:id="@+id/prodDesc"
+            android:layout_below="@id/prodName"
+            android:drawableLeft="@drawable/baseline_description_24"
+            android:hint="Description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"/>
+        <EditText android:id="@+id/prodCategory"
+            android:layout_below="@id/prodDesc"
+            android:hint="Category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/baseline_arrow_drop_down_24"
+            android:drawableStart="@drawable/baseline_format_list_bulleted_24"
+            android:drawablePadding="10dp"
+            android:layout_marginBottom="20dp"/>
+
+        <EditText android:id="@+id/prodPrice"
+            android:layout_below="@id/prodCategory"
+            android:hint="Price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/baseline_attach_money_24"
+            android:drawablePadding="10dp"
+            android:layout_marginBottom="20dp"/>
+
+        <EditText android:id="@+id/prodQty"
+            android:layout_below="@id/prodPrice"
+            android:hint="Quantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/baseline_call_missed_outgoing_24"
+            android:drawablePadding="10dp"
+            android:layout_marginBottom="20dp"/>
+
+
+
+        <LinearLayout
+            android:id="@+id/layout1"
+            android:layout_below="@id/prodQty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView android:id="@+id/imgView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@mipmap/ic_launcher"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_marginLeft="10dp" app:cornerRadius="0dp"
+                android:id="@+id/pickImg" android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="Upload Image" />
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_marginTop="20dp" android:layout_below="@+id/layout1"
+            app:cornerRadius="0dp" android:id="@+id/addProduct"
+            android:text="Add Product" android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

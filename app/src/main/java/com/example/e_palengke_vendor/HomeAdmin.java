@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -133,7 +134,10 @@ public class HomeAdmin extends AppCompatActivity implements NavigationView.OnNav
         }else if(items == R.id.NavAccount){
             replaceFragment(new AccountFragment());
         }else if(items == R.id.NavAddProduct){
-            replaceFragment(new AddProduct_Fragment());
+            Intent intent = new Intent(HomeAdmin.this,AddProduct.class);
+            startActivity(intent);
+
+
         }else if(items == R.id.NavHistory){
             replaceFragment(new HistoryFragment());
         }else if(items == R.id.NavDelivered){

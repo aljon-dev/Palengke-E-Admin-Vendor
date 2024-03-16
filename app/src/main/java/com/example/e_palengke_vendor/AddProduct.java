@@ -62,7 +62,7 @@ public class AddProduct extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_product);
+        setContentView(R.layout.activity_add_product);
 
         prodName = findViewById(R.id.prodName);
         prodDesc = findViewById(R.id.prodDesc);
@@ -99,7 +99,7 @@ public class AddProduct extends AppCompatActivity {
         prodCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            categoryDialog();
+                categoryDialog();
             }
         });
 
@@ -189,7 +189,7 @@ public class AddProduct extends AppCompatActivity {
                             Uri downloadImageUri = uriTask.getResult();
                             if(uriTask.isSuccessful()){
                                 HashMap<String, Object>  hashMap = new HashMap<>();
-                                hashMap.put("productId",""+timeStamp);
+                                hashMap.put("productId",""+String.valueOf(timeStamp));
                                 hashMap.put("productTitle", ""+productTitle);
                                 hashMap.put("productDescription", ""+productDescription);
                                 hashMap.put("productCategory", ""+productCategory);

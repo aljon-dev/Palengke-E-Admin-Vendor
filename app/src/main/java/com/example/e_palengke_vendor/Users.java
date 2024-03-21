@@ -7,6 +7,8 @@ public class Users {
     String name;
     String profile;
 
+    String Contacts;
+
 
 
     public Users(){
@@ -37,4 +39,6 @@ public class Users {
     public void setProfile(String profile) {
         this.profile = profile;
     }
+
+
 }

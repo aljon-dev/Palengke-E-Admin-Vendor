@@ -1,64 +1,256 @@
 package com.example.e_palengke_vendor;
 
+import android.app.AlertDialog;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AccountFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
+
+
 public class AccountFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
-    public AccountFragment() {
-        // Required empty public constructor
+    String id;
+
+    String email;
+
+
+
+
+    public AccountFragment(String Uid, String email) {
+
+        this.id = Uid;
+        this.email = email;
+
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AccountFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AccountFragment newInstance(String param1, String param2) {
-        AccountFragment fragment = new AccountFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+
+    TextView name,emailaddress,Contacts;
+
+    MaterialButton  EditAccount;
+
+    FirebaseDatabase firebaseDatabase;
+
+
+
+    FirebaseAuth firebaseAuth;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_account, container, false);
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+
+
+        View view = inflater.inflate(R.layout.fragment_account,container,false);
+
+        EditAccount = view.findViewById(R.id.accountInfo);
+
+
+        name = view.findViewById(R.id.name);
+        emailaddress = view.findViewById(R.id.email);
+        Contacts = view.findViewById(R.id.Contact);
+
+        Infos(id,email);
+
+        EditAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            EditData();
+
+            }
+        });
+
+
+
+        return view;
     }
+
+
+
+
+    private void Infos(String id, String email){
+
+        firebaseDatabase.getReference("Users").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Users user = snapshot.getValue(Users.class);
+                if(snapshot.exists()){
+
+                    String Username = user.getName();
+                    String Useremail = email;
+
+
+                    name.setText(Username);
+                    emailaddress.setText(Useremail);
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getActivity(), "Error ", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        firebaseDatabase.getReference("Users").child(id).child("Contact").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+               if(snapshot.exists()){
+
+                   HashMap<String,Object> contact = (HashMap<String,Object>) snapshot.getValue();
+
+                  Object ContactValue = contact.get("Contacts");
+                  String ContactData = String.valueOf(ContactValue);
+
+
+                  Contacts.setText(ContactData);
+
+
+
+               }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+    }
+
+private void  EditData(){
+    AlertDialog.Builder alertDialog  = new AlertDialog.Builder(getActivity());
+
+    FirebaseUser user = firebaseAuth.getCurrentUser();
+
+
+    alertDialog.setTitle("Edit Contact & User");
+
+    View view = getLayoutInflater().inflate(R.layout.editinfo,null,false);
+
+    TextInputEditText username,password,contacts;
+
+    username = view.findViewById(R.id.setNewUsername);
+    password = view.findViewById(R.id.setNewPassword);
+    contacts = view.findViewById(R.id.setContact);
+
+
+    if(user != null){
+        Boolean isGoogleSignIn = false;
+        for(UserInfo info : user.getProviderData()){
+            if(info.getProviderId().equals("google.com"));
+            isGoogleSignIn = true;
+            break;
+        }
+        if(isGoogleSignIn){
+            username.setEnabled(false);
+            username.setVisibility(View.GONE);
+            password.setEnabled(false);
+            password.setVisibility(View.GONE);
+        }
+        else{
+            username.setEnabled(true);
+            username.setVisibility(View.VISIBLE);
+            password.setEnabled(true);
+            password.setVisibility(View.VISIBLE);
+        }
+
+
+    }
+
+
+
+
+    alertDialog.setView(view);
+
+
+    alertDialog.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            String getUsername = username.getText().toString();
+            String getPassword = password.getText().toString();
+            String Contact = contacts.getText().toString();
+
+
+            SubmitData(getUsername,getPassword,Contact);
+
+
+
+
+        }
+    }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+
+        }
+    });
+    alertDialog.show();
+
+}
+
+private void SubmitData( String username,String password, String contacts){
+    FirebaseUser  user = firebaseAuth.getCurrentUser();
+    if(user != null){
+        Boolean isGoogleSign = false;
+
+        for(UserInfo info : user.getProviderData()){
+            if(info.getProviderId().equals("google.com")){
+                isGoogleSign = true;
+            }
+            if(isGoogleSign)
+            {
+
+                Map<String,Object> Update = new HashMap<>();
+
+                Update.put("Contacts",contacts);
+
+                firebaseDatabase.getReference("Users").child(id).child("Contact").setValue(Update);
+
+
+            }else{
+
+
+
+
+
+
+
+
+
+            }
+        }
+    }
+}
+
 }

@@ -23,7 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class HomeAdmin extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class HomeAdmin extends AppCompatActivity  {
 
     FirebaseAuth auth;
 
@@ -40,6 +40,11 @@ public class HomeAdmin extends AppCompatActivity implements NavigationView.OnNav
 
 
     FragmentManager fragmentManager;
+
+
+
+
+
 
 
 
@@ -60,14 +65,14 @@ public class HomeAdmin extends AppCompatActivity implements NavigationView.OnNav
         //ImageButton to appear Drawer navigation
         View header = nav.getHeaderView(0);
 
-
-
         imageView = header.findViewById(R.id.photos);
         nametxt = header.findViewById(R.id.nametext);
 
 
         //Retrieve the user from the login
+
         String Uid = getIntent().getStringExtra("id");
+        String email = getIntent().getStringExtra("email");
         NavigationUser(Uid);
 
         //nav bar Btn
@@ -81,7 +86,32 @@ public class HomeAdmin extends AppCompatActivity implements NavigationView.OnNav
         });
 
         //Navigation
-        nav.setNavigationItemSelectedListener(this);
+        nav.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int items = item.getItemId();
+                if(items == R.id.NavHome){
+                    replaceFragment(new HomeFragment());
+                }else if(items == R.id.NavAccount){
+
+                    replaceFragment(new AccountFragment(Uid,email));
+                }else if(items == R.id.NavAddProduct){
+                    Intent intent = new Intent(HomeAdmin.this,AddProduct.class);
+                    startActivity(intent);
+
+
+                }else if(items == R.id.NavHistory){
+                    replaceFragment(new HistoryFragment());
+                }else if(items == R.id.NavDelivered){
+                    replaceFragment(new DeliveredFragment());
+                }
+
+
+
+
+                return false;
+            }
+        });
 
         //Fragmentmanager
 
@@ -95,7 +125,7 @@ public class HomeAdmin extends AppCompatActivity implements NavigationView.OnNav
     // Showing the name and photo thru google sign In or Google Sign In
     private void NavigationUser(String id){
 
-        database.getReference().child("admin").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+        database.getReference("Users").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
@@ -112,6 +142,7 @@ public class HomeAdmin extends AppCompatActivity implements NavigationView.OnNav
                             .into(imageView);
                 }
 
+
             }
 
             @Override
@@ -126,30 +157,6 @@ public class HomeAdmin extends AppCompatActivity implements NavigationView.OnNav
     }
 
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int items = item.getItemId();
-        if(items == R.id.NavHome){
-            replaceFragment(new HomeFragment());
-        }else if(items == R.id.NavAccount){
-            replaceFragment(new AccountFragment());
-        }else if(items == R.id.NavAddProduct){
-            Intent intent = new Intent(HomeAdmin.this,AddProduct.class);
-            startActivity(intent);
-
-
-        }else if(items == R.id.NavHistory){
-            replaceFragment(new HistoryFragment());
-        }else if(items == R.id.NavDelivered){
-            replaceFragment(new DeliveredFragment());
-        }
-
-
-
-
-
-        return false;
-    }
 
     private void replaceFragment(Fragment fragment){
         FragmentManager Fragment = getSupportFragmentManager();

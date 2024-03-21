@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.service.credentials.CredentialEntry;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +27,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,11 +44,13 @@ public class MainActivity extends AppCompatActivity {
     FirebaseAuth auth;
 
 
-    Button GoogleBtn;
+
 
     TextView  register;
 
-    Button googleSignInButton;
+    Button googleSignInButton, loginBtn;
+
+    EditText UserEmail,passwordInput;
 
 
     final int RC_SIGN_IN = 100;
@@ -60,7 +66,25 @@ public class MainActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
 
+        //TextView
+        UserEmail = findViewById(R.id.UserEmail);
+        passwordInput = findViewById(R.id.PasswordInput);
+
+
+
+        // Button
         googleSignInButton = findViewById(R.id.GoogleSignin);
+        loginBtn = findViewById(R.id.loginbtn);
+
+        // Google Sign
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        gsc = GoogleSignIn.getClient(this, gso);
+
+
         googleSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,12 +92,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = UserEmail.getText().toString();
+                String password = passwordInput.getText().toString();
 
-        gsc = GoogleSignIn.getClient(this, gso);
+                Login(email,password);
+            }
+        });
+
+
+
+
     }
 
     private void signIn() {
@@ -96,6 +127,33 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    private void Login(String email, String password){
+
+        auth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+
+
+
+                    FirebaseUser user = auth.getCurrentUser();
+                    Users users = new Users();
+                    users.setUserId(user.getUid());
+
+
+
+                    Intent intent = new Intent(MainActivity.this,HomeAdmin.class);
+                    intent.putExtra("id",users.getUserId());
+                    intent.putExtra("email",user.getEmail());
+                    startActivity(intent);
+                }
+
+            }
+        });
+
+    }
+
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         auth.signInWithCredential(credential)
@@ -110,11 +168,35 @@ public class MainActivity extends AppCompatActivity {
                             users.setName(user.getDisplayName());
                             users.setProfile(String.valueOf(user.getPhotoUrl()));
 
-                            database.getReference().child("admin").child(users.getUserId()).setValue(users);
 
-                            Intent intent = new Intent(MainActivity.this, HomeAdmin.class);
-                            intent.putExtra("id", users.getUserId());
-                            startActivity(intent);
+                            database.getReference("Users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if(snapshot.exists()){
+                                        Toast.makeText(MainActivity.this, "Account Logged In", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(MainActivity.this, HomeAdmin.class);
+                                        intent.putExtra("id", users.getUserId());
+                                        intent.putExtra("email",user.getEmail());
+                                        startActivity(intent);
+                                    }else{
+
+                                        database.getReference().child("Users").child(users.getUserId()).setValue(users);
+
+                                        Intent intent = new Intent(MainActivity.this, HomeAdmin.class);
+                                        intent.putExtra("id", users.getUserId());
+                                        intent.putExtra("email",user.getEmail());
+                                        startActivity(intent);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+
+
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(MainActivity.this, "Authentication failed.",

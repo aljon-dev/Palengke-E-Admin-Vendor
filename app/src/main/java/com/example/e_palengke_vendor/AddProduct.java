@@ -189,7 +189,7 @@ public class AddProduct extends AppCompatActivity {
                             Uri downloadImageUri = uriTask.getResult();
                             if(uriTask.isSuccessful()){
                                 HashMap<String, Object>  hashMap = new HashMap<>();
-                                hashMap.put("productId",""+String.valueOf(timeStamp));
+                                hashMap.put("productId",""+(timeStamp));
                                 hashMap.put("productTitle", ""+productTitle);
                                 hashMap.put("productDescription", ""+productDescription);
                                 hashMap.put("productCategory", ""+productCategory);

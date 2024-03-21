@@ -135,20 +135,21 @@ public class MainActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
 
-
-
                     FirebaseUser user = auth.getCurrentUser();
                     Users users = new Users();
                     users.setUserId(user.getUid());
 
 
-
                     Intent intent = new Intent(MainActivity.this,HomeAdmin.class);
                     intent.putExtra("id",users.getUserId());
                     intent.putExtra("email",user.getEmail());
+                    intent.putExtra("IsGoogleSignIn",false);
                     startActivity(intent);
-                }
 
+                }
+                else{
+                    Toast.makeText(MainActivity.this, "Invalid User & Password", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -168,7 +169,6 @@ public class MainActivity extends AppCompatActivity {
                             users.setName(user.getDisplayName());
                             users.setProfile(String.valueOf(user.getPhotoUrl()));
 
-
                             database.getReference("Users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -185,6 +185,8 @@ public class MainActivity extends AppCompatActivity {
                                         Intent intent = new Intent(MainActivity.this, HomeAdmin.class);
                                         intent.putExtra("id", users.getUserId());
                                         intent.putExtra("email",user.getEmail());
+                                        intent.putExtra("IsGoogleSignIn",true);
+
                                         startActivity(intent);
                                     }
                                 }

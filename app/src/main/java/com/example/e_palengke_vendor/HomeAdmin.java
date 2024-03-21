@@ -73,6 +73,7 @@ public class HomeAdmin extends AppCompatActivity  {
 
         String Uid = getIntent().getStringExtra("id");
         String email = getIntent().getStringExtra("email");
+        Boolean IsGoogleSignIn = getIntent().getBooleanExtra("IsGoogleSignIn",true);
         NavigationUser(Uid);
 
         //nav bar Btn
@@ -94,7 +95,7 @@ public class HomeAdmin extends AppCompatActivity  {
                     replaceFragment(new HomeFragment());
                 }else if(items == R.id.NavAccount){
 
-                    replaceFragment(new AccountFragment(Uid,email));
+                    replaceFragment(new AccountFragment(Uid,email,IsGoogleSignIn));
                 }else if(items == R.id.NavAddProduct){
                     Intent intent = new Intent(HomeAdmin.this,AddProduct.class);
                     startActivity(intent);

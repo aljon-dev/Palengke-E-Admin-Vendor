@@ -36,13 +36,16 @@ public class AccountFragment extends Fragment {
 
     String email;
 
+    Boolean IsGoogleSignIn;
 
 
 
-    public AccountFragment(String Uid, String email) {
+
+    public AccountFragment(String Uid, String email,Boolean isGoogleSignIn) {
 
         this.id = Uid;
         this.email = email;
+        this.IsGoogleSignIn = isGoogleSignIn;
 
     }
 
@@ -92,7 +95,6 @@ public class AccountFragment extends Fragment {
 
 
 
-
     private void Infos(String id, String email){
 
         firebaseDatabase.getReference("Users").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -119,7 +121,7 @@ public class AccountFragment extends Fragment {
             }
         });
 
-        firebaseDatabase.getReference("Users").child(id).child("Contact").addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseDatabase.getReference("Users").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -152,7 +154,6 @@ public class AccountFragment extends Fragment {
 private void  EditData(){
     AlertDialog.Builder alertDialog  = new AlertDialog.Builder(getActivity());
 
-    FirebaseUser user = firebaseAuth.getCurrentUser();
 
 
     alertDialog.setTitle("Edit Contact & User");
@@ -165,30 +166,14 @@ private void  EditData(){
     password = view.findViewById(R.id.setNewPassword);
     contacts = view.findViewById(R.id.setContact);
 
-
-    if(user != null){
-        Boolean isGoogleSignIn = false;
-        for(UserInfo info : user.getProviderData()){
-            if(info.getProviderId().equals("google.com"));
-            isGoogleSignIn = true;
-            break;
-        }
-        if(isGoogleSignIn){
-            username.setEnabled(false);
-            username.setVisibility(View.GONE);
-            password.setEnabled(false);
-            password.setVisibility(View.GONE);
-        }
-        else{
-            username.setEnabled(true);
-            username.setVisibility(View.VISIBLE);
-            password.setEnabled(true);
-            password.setVisibility(View.VISIBLE);
-        }
-
+    if(IsGoogleSignIn == true){
+        username.setVisibility(View.GONE);
+        password.setVisibility(View.GONE);
+    }else{
+        username.setVisibility(View.VISIBLE);
+        password.setVisibility(View.VISIBLE);
 
     }
-
 
 
 
@@ -202,17 +187,13 @@ private void  EditData(){
             String getPassword = password.getText().toString();
             String Contact = contacts.getText().toString();
 
-
             SubmitData(getUsername,getPassword,Contact);
-
-
-
 
         }
     }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
-
+                dialog.dismiss();
         }
     });
     alertDialog.show();
@@ -235,10 +216,18 @@ private void SubmitData( String username,String password, String contacts){
 
                 Update.put("Contacts",contacts);
 
-                firebaseDatabase.getReference("Users").child(id).child("Contact").setValue(Update);
+                firebaseDatabase.getReference("Users").child(id).updateChildren(Update);
 
 
             }else{
+
+                Map<String,Object> Update = new HashMap<>();
+
+                Update.put("Contacts",contacts);
+                Update.put("name",username);
+
+                firebaseDatabase.getReference("Users").child(id).updateChildren(Update);
+
 
 
 

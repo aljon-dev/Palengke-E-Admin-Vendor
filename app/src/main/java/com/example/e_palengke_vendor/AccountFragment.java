@@ -129,16 +129,13 @@ public class AccountFragment extends Fragment {
 
                    HashMap<String,Object> contact = (HashMap<String,Object>) snapshot.getValue();
 
-                  Object ContactValue = contact.get("Contacts");
+                  Object ContactValue = contact.get("contact");
                   String ContactData = String.valueOf(ContactValue);
-
 
                   Contacts.setText(ContactData);
 
 
-
                }
-
 
             }
 
@@ -175,10 +172,7 @@ private void  EditData(){
 
     }
 
-
-
     alertDialog.setView(view);
-
 
     alertDialog.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
         @Override
@@ -202,44 +196,33 @@ private void  EditData(){
 
 private void SubmitData( String username,String password, String contacts){
     FirebaseUser  user = firebaseAuth.getCurrentUser();
-    if(user != null){
-        Boolean isGoogleSign = false;
-
-        for(UserInfo info : user.getProviderData()){
-            if(info.getProviderId().equals("google.com")){
-                isGoogleSign = true;
-            }
-            if(isGoogleSign)
-            {
-
-                Map<String,Object> Update = new HashMap<>();
-
-                Update.put("Contacts",contacts);
-
-                firebaseDatabase.getReference("Users").child(id).updateChildren(Update);
-
-
-            }else{
-
-                Map<String,Object> Update = new HashMap<>();
-
-                Update.put("Contacts",contacts);
-                Update.put("name",username);
-
-                firebaseDatabase.getReference("Users").child(id).updateChildren(Update);
 
 
 
+    if(IsGoogleSignIn == true) {
+
+        Map<String, Object> Update = new HashMap<>();
+
+        Update.put("contact",contacts);
+
+        firebaseDatabase.getReference("Users").child(id).updateChildren(Update);
+
+    }else {
+
+        Map<String, Object> Update = new HashMap<>();
+        Update.put("contact", contacts);
+        Update.put("username",username);
+
+        user.updatePassword(password);
 
 
 
-
-
-
-
-            }
-        }
+        firebaseDatabase.getReference("Users").child(id).updateChildren(Update);
     }
-}
+
+
+
+    }
+
 
 }

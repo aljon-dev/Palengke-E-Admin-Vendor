@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -92,7 +93,7 @@ public class HomeAdmin extends AppCompatActivity  {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int items = item.getItemId();
                 if(items == R.id.NavHome){
-                    replaceFragment(new HomeFragment());
+                    replaceFragment(new HomeFragment(Uid));
                 }else if(items == R.id.NavAccount){
 
                     replaceFragment(new AccountFragment(Uid,email,IsGoogleSignIn));
@@ -107,6 +108,12 @@ public class HomeAdmin extends AppCompatActivity  {
                     replaceFragment(new DeliveredFragment());
                 }
 
+                else if(items == R.id.LogOut){
+
+                    HomeAdmin.this.finish();
+
+                }
+
 
 
 
@@ -117,7 +124,7 @@ public class HomeAdmin extends AppCompatActivity  {
         //Fragmentmanager
 
       fragmentManager = getSupportFragmentManager();
-        replaceFragment(new HomeFragment());
+        replaceFragment(new HomeFragment(Uid));
 
 
     }
@@ -142,8 +149,6 @@ public class HomeAdmin extends AppCompatActivity  {
                             .circleCrop()
                             .into(imageView);
                 }
-
-
             }
 
             @Override
@@ -151,10 +156,6 @@ public class HomeAdmin extends AppCompatActivity  {
                 Toast.makeText(HomeAdmin.this, "Error", Toast.LENGTH_SHORT).show();
             }
         });
-
-
-
-
     }
 
 

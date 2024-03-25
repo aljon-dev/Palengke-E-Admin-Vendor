@@ -1,15 +1,22 @@
 package com.example.e_palengke_vendor;
 
 import static android.app.Activity.RESULT_OK;
-
+import android.Manifest;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.media.Image;
+
 import android.net.Uri;
 import android.os.Bundle;
 
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
@@ -20,9 +27,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
+
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -30,6 +37,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -44,6 +52,10 @@ public class AddProducts extends Fragment {
     FirebaseDatabase firebaseDatabase;
 
     int REQUEST_CAMERA_PICK = 20;
+    int REQUEST_GALLERY_PICK = 40;
+
+    int CAMERA_PERMISSION = 100;
+    int STORAGE_PERMISSION = 101;
 
     public AddProducts(String Uid) {
        this.id = Uid;
@@ -55,8 +67,9 @@ public class AddProducts extends Fragment {
 
     ImageView  imgview;
 
+    Bitmap bitmap;
 
-
+    Uri SelectedImageUri;
 
 
 
@@ -94,7 +107,7 @@ public class AddProducts extends Fragment {
         uploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              UploadUsingCamera();
+                    SelectActionDialog();
             }
         });
 
@@ -102,14 +115,13 @@ public class AddProducts extends Fragment {
             @Override
             public void onClick(View v) {
 
-             /*  String prodname = productname.getText().toString();
+           String prodname = productname.getText().toString();
                String prodDesc = productdesc.getText().toString();
                String Categories = productcategory.getText().toString();
                String productprice = prodprice.getText().toString();
                String productQty = productqty.getText().toString();
-                AddProduct(prodname,prodDesc,Categories,productprice,productQty);
+               AddProduct(bitmap,prodname,prodDesc,Categories,productprice,productQty);
 
-              */
 
             }
         });
@@ -118,69 +130,20 @@ public class AddProducts extends Fragment {
         return view;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode == REQUEST_CAMERA_PICK ){
-
-            Bundle extras = data.getExtras();
-            Bitmap bitmap = (Bitmap) extras.get("data");
-            imgview.setImageBitmap(bitmap);
-            UploadImage(bitmap);
 
 
-        }
-    }
-
-   /*private void AddProduct(String ProdName,String Desc,String Category,String Price, String Qty){
-
-        String timestamp = String.valueOf(System.currentTimeMillis());
-
-        Map<String,Object> AddProduct = new HashMap<>();
-
-        AddProduct.put("ProductName", ProdName);
-        AddProduct.put("Description",Desc);
-        AddProduct.put("Category",Category);
-        AddProduct.put("Price",Price);
-        AddProduct.put("Quantity",Qty);
-
-
-        firebaseDatabase.getReference("Users").child(id).child("Products").child(timestamp).setValue(AddProduct).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-
-                if(task.isSuccessful()){
-
-                    Toast.makeText(getActivity(), "Successfull", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-
-
-    } */
-
-
-    private void UploadUsingCamera(){
-        Intent UploadImages = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if(UploadImages.resolveActivity(getActivity().getPackageManager()) != null){
-            startActivityForResult(UploadImages,REQUEST_CAMERA_PICK);
-
-        }
-
-    }
-
-    private void UploadImage(Bitmap bitmap){
+   private void AddProduct(Bitmap bitmaps, String ProdName,String Desc,String Category,String Price, String Qty){
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG,100,baos);
-        byte [] ImageToData = baos.toByteArray();
+        bitmaps.compress(Bitmap.CompressFormat.JPEG,100,baos);
+        byte [] imageData = baos.toByteArray();
 
         String filename = UUID.randomUUID().toString();
 
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Uploads/" + filename);
-        storageReference.putBytes(ImageToData).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        String timestamp = String.valueOf(System.currentTimeMillis());
+
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Upload/" + filename);
+        storageReference.putBytes(imageData).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -188,25 +151,143 @@ public class AddProducts extends Fragment {
                     public void onSuccess(Uri uri) {
                         String Uri = uri.toString();
 
-                        Map<String, Object> addphoto = new HashMap<>();
-                        addphoto.put("ProductImg",Uri);
+                        Map<String,Object> AddProduct = new HashMap<>();
 
+                        AddProduct.put("ProductName", ProdName);
+                        AddProduct.put("Description",Desc);
+                        AddProduct.put("Category",Category);
+                        AddProduct.put("Price",Price);
+                        AddProduct.put("Quantity",Qty);
+                        AddProduct.put("ProductImg",Uri);
 
-
-                        firebaseDatabase.getReference("Users").child(id).child("Products").setValue(addphoto).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if(task.isSuccessful()){
-                                    Toast.makeText(getActivity(), "Uploaded Pic", Toast.LENGTH_SHORT).show();
-                                }else{
-                                    Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
+                        firebaseDatabase.getReference("Users").child(id).child("Products").child(timestamp).setValue(AddProduct);
                     }
                 });
             }
         });
+
+    }
+
+    private void UploadUsingCamera(){
+        Intent UploadImages = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if(UploadImages.resolveActivity(requireActivity().getPackageManager())!= null){
+            startActivityForResult(UploadImages,REQUEST_CAMERA_PICK);
+
+        }else{
+
+            Toast.makeText(getActivity(), "NO CAMERA FOUND ", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+    private void UploadGallery(){
+        Intent PickGallery = new Intent (Intent.ACTION_GET_CONTENT);
+        PickGallery.setType("image/*");
+        if(PickGallery.resolveActivity(requireActivity().getPackageManager()) != null){
+            startActivityForResult(Intent.createChooser(PickGallery,"Select Picture"),REQUEST_GALLERY_PICK);
+        }
+        else{
+            Toast.makeText(getActivity(), "No Gallery App Available", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == REQUEST_CAMERA_PICK){
+            Bundle bundle = data.getExtras();
+            bitmap = (Bitmap) bundle.get("data");
+            imgview.setImageBitmap(bitmap);
+
+        }
+        if(requestCode == REQUEST_GALLERY_PICK){
+                if(data != null && data.getData() != null){
+                    SelectedImageUri = data.getData();
+
+                    try{
+                        bitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(),SelectedImageUri);
+                        imgview.setImageBitmap(bitmap);
+                    }catch(IOException e){
+                        Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        }
+    }
+
+    private void RequestCameraPermission(){
+        ActivityCompat.requestPermissions(requireActivity(),new String[]{Manifest.permission.CAMERA},CAMERA_PERMISSION);
+    }
+    private void requestStoragePermission(){
+        ActivityCompat.requestPermissions(requireActivity(),new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},STORAGE_PERMISSION);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == CAMERA_PERMISSION){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                UploadUsingCamera();
+            }else{
+                Toast.makeText(getActivity(), "CAMERA PERMISSION DENIED", Toast.LENGTH_SHORT).show();
+            }
+
+            }else if(requestCode == STORAGE_PERMISSION){
+            if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                UploadGallery();
+            }else{
+                Toast.makeText(getActivity(), "Storage Permission Denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+    }
+
+    private boolean CheckCameraPermission(){
+        return ContextCompat.checkSelfPermission(requireContext(),Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+
+    }
+
+    private Boolean CheckGalleryPermission(){
+        return ContextCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+               ContextCompat.checkSelfPermission(requireContext(),Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+    }
+
+
+    private void SelectActionDialog(){
+
+        CharSequence ActionSelect [] =  {"Camera","Gallery"};
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+
+        alertDialog.setTitle("Select Action");
+
+    alertDialog.setItems(ActionSelect, new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+
+
+            if(which == 0) {
+
+                if(CheckCameraPermission()){
+                    UploadUsingCamera();
+                }else{
+                    RequestCameraPermission();
+                }
+
+            }else if (which == 1) {
+                if(CheckGalleryPermission()){
+                    UploadGallery();
+                }else{
+                    requestStoragePermission();
+                }
+            }
+
+
+
+        }
+
+    });
+    alertDialog.show();
 
 
 
@@ -215,4 +296,8 @@ public class AddProducts extends Fragment {
     }
 
 
-}
+    }
+
+
+
+

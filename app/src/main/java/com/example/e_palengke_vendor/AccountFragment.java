@@ -51,7 +51,7 @@ public class AccountFragment extends Fragment {
 
 
 
-    TextView name,emailaddress,Contacts;
+    TextView name,emailaddress,Contacts, UserAddress;
 
     MaterialButton  EditAccount;
 
@@ -77,6 +77,7 @@ public class AccountFragment extends Fragment {
         name = view.findViewById(R.id.name);
         emailaddress = view.findViewById(R.id.email);
         Contacts = view.findViewById(R.id.Contact);
+        UserAddress = view.findViewById(R.id.Address);
 
         Infos(id,email);
 
@@ -97,7 +98,7 @@ public class AccountFragment extends Fragment {
 
     private void Infos(String id, String email){
 
-        firebaseDatabase.getReference("Users").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseDatabase.getReference("admin").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Users user = snapshot.getValue(Users.class);
@@ -105,10 +106,12 @@ public class AccountFragment extends Fragment {
 
                     String Username = user.getName();
                     String Useremail = email;
+                    String address = user.getAddress();
 
 
                     name.setText(Username);
                     emailaddress.setText(Useremail);
+                    UserAddress.setText(address);
 
 
                 }
@@ -121,7 +124,7 @@ public class AccountFragment extends Fragment {
             }
         });
 
-        firebaseDatabase.getReference("Users").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseDatabase.getReference("admin").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -157,11 +160,12 @@ private void  EditData(){
 
     View view = getLayoutInflater().inflate(R.layout.editinfo,null,false);
 
-    TextInputEditText username,password,contacts;
+    TextInputEditText username,password,contacts,address;
 
     username = view.findViewById(R.id.setNewUsername);
     password = view.findViewById(R.id.setNewPassword);
     contacts = view.findViewById(R.id.setContact);
+    address = view.findViewById(R.id.setAddress);
 
     if(IsGoogleSignIn == true){
         username.setVisibility(View.GONE);
@@ -172,16 +176,28 @@ private void  EditData(){
 
     }
 
+
+
     alertDialog.setView(view);
 
     alertDialog.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
+
             String getUsername = username.getText().toString();
             String getPassword = password.getText().toString();
             String Contact = contacts.getText().toString();
+            String addresses = address.getText().toString();
 
-            SubmitData(getUsername,getPassword,Contact);
+            if(getUsername.isEmpty() || getPassword.isEmpty() || Contact.isEmpty() || addresses.isEmpty()){
+                SubmitData(getUsername,getPassword,Contact,addresses);
+                Toast.makeText(getActivity(), "Edit Successfully", Toast.LENGTH_SHORT).show();
+
+            }else{
+
+                Toast.makeText(getActivity(), "Failed ", Toast.LENGTH_SHORT).show();
+            }
+
 
         }
     }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -194,7 +210,7 @@ private void  EditData(){
 
 }
 
-private void SubmitData( String username,String password, String contacts){
+private void SubmitData( String username,String password, String contacts, String Address){
     FirebaseUser  user = firebaseAuth.getCurrentUser();
 
 
@@ -204,20 +220,22 @@ private void SubmitData( String username,String password, String contacts){
         Map<String, Object> Update = new HashMap<>();
 
         Update.put("contact",contacts);
+        Update.put("address",Address);
 
-        firebaseDatabase.getReference("Users").child(id).updateChildren(Update);
+        firebaseDatabase.getReference("admin").child(id).updateChildren(Update);
 
     }else {
 
         Map<String, Object> Update = new HashMap<>();
         Update.put("contact", contacts);
         Update.put("username",username);
+        Update.put("address",Address);
 
         user.updatePassword(password);
 
 
 
-        firebaseDatabase.getReference("Users").child(id).updateChildren(Update);
+        firebaseDatabase.getReference("admin").child(id).updateChildren(Update);
     }
 
 

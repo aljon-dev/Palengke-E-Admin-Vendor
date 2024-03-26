@@ -131,7 +131,7 @@ public class HomeAdmin extends AppCompatActivity  {
     // Showing the name and photo thru google sign In or Google Sign In
     private void NavigationUser(String id){
 
-        database.getReference("Users").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+        database.getReference("admin").child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){

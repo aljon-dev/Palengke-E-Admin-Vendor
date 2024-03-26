@@ -47,14 +47,14 @@ public class HomeFragment extends Fragment {
 
       NumberProducts = view.findViewById(R.id.NumberProducts);
 
-      firebaseDatabase.getReference("Users").child(id).child("Products").addListenerForSingleValueEvent(new ValueEventListener() {
+      firebaseDatabase.getReference("admin").child(id).child("Products").addListenerForSingleValueEvent(new ValueEventListener() {
           @Override
           public void onDataChange(@NonNull DataSnapshot snapshot) {
               for(numberOfObjects = 0; numberOfObjects < snapshot.getChildrenCount(); numberOfObjects++){
-                  numberOfObjects++;
+                  numberOfObjects++ ;
 
               }
-              NumberProducts.setText(String.valueOf(numberOfObjects) +" "+ "- " +"Products");
+              NumberProducts.setText(String.valueOf(numberOfObjects ) +" "+ "- " +"Products");
           }
 
           @Override

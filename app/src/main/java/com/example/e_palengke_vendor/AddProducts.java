@@ -1,9 +1,7 @@
 package com.example.e_palengke_vendor;
 
-import static android.app.Activity.RESULT_OK;
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -28,8 +26,11 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -120,7 +121,13 @@ public class AddProducts extends Fragment {
                String Categories = productcategory.getText().toString();
                String productprice = prodprice.getText().toString();
                String productQty = productqty.getText().toString();
-               AddProduct(bitmap,prodname,prodDesc,Categories,productprice,productQty);
+
+               if(prodname.isEmpty() || prodDesc.isEmpty() || Categories.isEmpty() || productprice.isEmpty() || productQty.isEmpty()){
+                   Toast.makeText(getActivity(), "Fill the fields", Toast.LENGTH_SHORT).show();
+               }else{
+                   AddProduct(bitmap,prodname,prodDesc,Categories,productprice,productQty);
+               }
+
 
 
             }
@@ -153,14 +160,25 @@ public class AddProducts extends Fragment {
 
                         Map<String,Object> AddProduct = new HashMap<>();
 
-                        AddProduct.put("ProductName", ProdName);
-                        AddProduct.put("Description",Desc);
-                        AddProduct.put("Category",Category);
-                        AddProduct.put("Price",Price);
-                        AddProduct.put("Quantity",Qty);
-                        AddProduct.put("ProductImg",Uri);
+                            AddProduct.put("ProductName", ProdName);
+                            AddProduct.put("Description",Desc);
+                            AddProduct.put("Category",Category);
+                            AddProduct.put("Price",Price);
+                            AddProduct.put("Quantity",Qty);
+                            AddProduct.put("ProductImg",Uri);
 
-                        firebaseDatabase.getReference("Users").child(id).child("Products").child(timestamp).setValue(AddProduct);
+                            firebaseDatabase.getReference("admin").child(id).child("Products").child(timestamp).setValue(AddProduct).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                  if(task.isSuccessful()){
+                                      Toast.makeText(getActivity(), "Uploaded", Toast.LENGTH_SHORT).show();
+
+                                  }else{
+                                      Toast.makeText(getActivity(), "Failed To Upload ", Toast.LENGTH_SHORT).show();
+                                  }
+                                }
+                            });
+
                     }
                 });
             }
@@ -290,9 +308,14 @@ public class AddProducts extends Fragment {
     alertDialog.show();
 
 
+    }
+    private void Successfull(){
 
-
-
+        productname.setText("");
+        productqty.setText("");
+        prodprice.setText("");
+        productcategory.setText("");
+        productdesc.setText("");
     }
 
 

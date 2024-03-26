@@ -23,7 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class Register extends AppCompatActivity {
 
-    EditText  userEmail ,userName, userPassword, ConfirmPassword,Number;
+    EditText  userEmail ,userName, userPassword, ConfirmPassword,Number,Address;
 
     CheckBox cbox;
 
@@ -51,6 +51,7 @@ public class Register extends AppCompatActivity {
 
 
         // Forms
+        Address = findViewById(R.id.UserAddress);
         userEmail = findViewById(R.id.EmailInput);
         userName = findViewById(R.id.UserInput);
         userPassword = findViewById(R.id.PasswordInput);
@@ -81,6 +82,8 @@ public class Register extends AppCompatActivity {
 
 
         String userNames =  userName.getText().toString().trim();
+        String contact =  Number.getText().toString().trim();
+        String address = Address.getText().toString().trim();
 
 
         mAuth.createUserWithEmailAndPassword(UserEmail,UserPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -93,6 +96,9 @@ public class Register extends AppCompatActivity {
                     users.setName(userNames);
                     users.setUserId(user.getUid());
                     users.setProfile("");
+                    users.setContacts(contact);
+                    users.setAddress(address);
+
 
 
 

@@ -9,6 +9,8 @@ public class Users {
 
     String Contacts;
 
+    String address;
+
 
 
     public Users(){
@@ -38,6 +40,22 @@ public class Users {
 
     public void setProfile(String profile) {
         this.profile = profile;
+    }
+
+    public String getContacts() {
+        return Contacts;
+    }
+
+    public void setContacts(String contacts) {
+        Contacts = contacts;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
 

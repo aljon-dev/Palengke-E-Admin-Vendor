@@ -168,8 +168,9 @@ public class MainActivity extends AppCompatActivity {
                             users.setUserId(user.getUid());
                             users.setName(user.getDisplayName());
                             users.setProfile(String.valueOf(user.getPhotoUrl()));
+                            users.setAddress("");
 
-                            database.getReference("Users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            database.getReference("admin").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     if(snapshot.exists()){
@@ -180,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
                                         startActivity(intent);
                                     }else{
 
-                                        database.getReference().child("Users").child(users.getUserId()).setValue(users);
+                                        database.getReference().child("admin").child(users.getUserId()).setValue(users);
 
                                         Intent intent = new Intent(MainActivity.this, HomeAdmin.class);
                                         intent.putExtra("id", users.getUserId());

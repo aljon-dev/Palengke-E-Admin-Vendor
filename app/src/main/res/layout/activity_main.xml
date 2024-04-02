@@ -55,9 +55,7 @@
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="105dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_gravity="center_horizontal"
                     android:text="VENDOR"
 
                     android:textColor="@color/white"
@@ -66,7 +64,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="398dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="100dp"
                     android:gravity="center"
                     android:orientation="vertical">

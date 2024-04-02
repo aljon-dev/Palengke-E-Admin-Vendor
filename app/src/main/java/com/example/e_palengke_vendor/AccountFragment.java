@@ -132,7 +132,7 @@ public class AccountFragment extends Fragment {
 
                    HashMap<String,Object> contact = (HashMap<String,Object>) snapshot.getValue();
 
-                  Object ContactValue = contact.get("contacts");
+                  Object ContactValue = contact.get("contact");
                   String ContactData = String.valueOf(ContactValue);
 
                   Contacts.setText(ContactData);
@@ -169,6 +169,7 @@ private void  EditData(){
 
     if(IsGoogleSignIn == true){
         username.setVisibility(View.GONE);
+        username.setEnabled(false);
 
     }else{
         username.setVisibility(View.VISIBLE);
@@ -187,7 +188,7 @@ private void  EditData(){
             String Contact = contacts.getText().toString();
             String addresses = address.getText().toString();
 
-            if(getUsername.isEmpty() ||  Contact.isEmpty() || addresses.isEmpty()){
+            if(Contact.isEmpty() || addresses.isEmpty()){
 
                 Toast.makeText(getActivity(), "Fill In", Toast.LENGTH_SHORT).show();
 
@@ -225,7 +226,7 @@ private void SubmitData( String username, String contacts, String Address){
     }else {
 
         Map<String, Object> Update = new HashMap<>();
-        Update.put("contacts", contacts);
+        Update.put("contact", contacts);
         Update.put("name",username);
         Update.put("address",Address);
 

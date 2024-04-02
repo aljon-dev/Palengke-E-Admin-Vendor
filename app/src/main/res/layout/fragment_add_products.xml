@@ -49,6 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/prodCategory"
             android:layout_marginBottom="20dp"
+            android:inputType="number"
             android:drawableStart="@drawable/baseline_attach_money_24"
             android:drawablePadding="10dp"
             android:hint="Price" />
@@ -59,6 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/prodPrice"
             android:layout_marginBottom="20dp"
+            android:inputType="number"
             android:drawableLeft="@drawable/baseline_call_missed_outgoing_24"
             android:drawablePadding="10dp"
             android:hint="Quantity" />

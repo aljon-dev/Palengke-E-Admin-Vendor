@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -65,10 +66,30 @@ public class Register extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                registration(userEmail.getText().toString().trim(),userPassword.getText().toString().trim());
 
-            }
+
+                String email = userEmail.getText().toString().trim();
+                String userNames =  userName.getText().toString().trim();
+                String password = userPassword.getText().toString().trim();
+                String CPassword = ConfirmPassword.getText().toString().trim();
+                String Contacts = Number.getText().toString().trim();
+
+
+                if(email.isEmpty() || userNames.isEmpty() || password.isEmpty() || CPassword.isEmpty() || Contacts.isEmpty()){
+                    Toast.makeText(Register.this, "Fill the Fields", Toast.LENGTH_SHORT).show();
+                    if(!password.equals(CPassword)){
+                        Toast.makeText(Register.this, "Password not Equal", Toast.LENGTH_SHORT).show();
+                    }else if(!cbox.isChecked()){
+                        Toast.makeText(Register.this, "Checked The Box", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        registration(userEmail.getText().toString().trim(), userPassword.getText().toString().trim());
+                    }
+                }
+
+                }
         });
+
 
 
 
@@ -78,8 +99,6 @@ public class Register extends AppCompatActivity {
     }
 
     private void registration(String UserEmail,String UserPassword){
-        validationform();
-
 
         String userNames =  userName.getText().toString().trim();
         String contact =  Number.getText().toString().trim();
@@ -89,8 +108,8 @@ public class Register extends AppCompatActivity {
         mAuth.createUserWithEmailAndPassword(UserEmail,UserPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    FirebaseUser user  = mAuth.getCurrentUser();
+                if(task.isSuccessful()) {
+                    FirebaseUser user = mAuth.getCurrentUser();
 
                     Users users = new Users();
                     users.setName(userNames);
@@ -98,8 +117,6 @@ public class Register extends AppCompatActivity {
                     users.setProfile("");
                     users.setContacts(contact);
                     users.setAddress(address);
-
-
 
 
                     ProgressDialog progressDialog = new ProgressDialog(Register.this);
@@ -111,9 +128,6 @@ public class Register extends AppCompatActivity {
                             progressDialog.setMessage("Registering");
                             progressDialog.setTitle("Registration");
                             progressDialog.show();
-
-
-
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -122,12 +136,16 @@ public class Register extends AppCompatActivity {
                         }
                     });
 
+                }else if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                    Toast.makeText(Register.this, "This Account is Already Registered ", Toast.LENGTH_SHORT).show();
+
+                    }
 
 
 
 
 
-                }
+
             }
         });
 
@@ -136,24 +154,7 @@ public class Register extends AppCompatActivity {
 
     }
 
-public  void validationform(){
 
-        String email = userEmail.getText().toString().trim();
-        String userNames =  userName.getText().toString().trim();
-        String password = userPassword.getText().toString().trim();
-        String CPassword = ConfirmPassword.getText().toString().trim();
-        String Contacts = Number.getText().toString().trim();
-
-
-        if(email.isEmpty() || userNames.isEmpty() || password.isEmpty() || CPassword.isEmpty() || Contacts.isEmpty()){
-            Toast.makeText(this, "Fill the Fields", Toast.LENGTH_SHORT).show();
-            if(!password.equals(CPassword)){
-                Toast.makeText(this, "Password Not Match", Toast.LENGTH_SHORT).show();
-            }else if(!cbox.isChecked()){
-                Toast.makeText(this, "Put Check about the Privacy Policy ", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
 
 
 

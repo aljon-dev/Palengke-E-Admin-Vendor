@@ -132,7 +132,7 @@ public class AccountFragment extends Fragment {
 
                    HashMap<String,Object> contact = (HashMap<String,Object>) snapshot.getValue();
 
-                  Object ContactValue = contact.get("contact");
+                  Object ContactValue = contact.get("contacts");
                   String ContactData = String.valueOf(ContactValue);
 
                   Contacts.setText(ContactData);
@@ -159,21 +159,19 @@ private void  EditData(){
     alertDialog.setTitle("Edit Contact & User");
 
     View view = getLayoutInflater().inflate(R.layout.editinfo,null,false);
-
-    TextInputEditText username,password,contacts,address;
+    FirebaseUser  user = firebaseAuth.getCurrentUser();
+    TextInputEditText username,contacts,address;
 
     username = view.findViewById(R.id.setNewUsername);
-    password = view.findViewById(R.id.setNewPassword);
+
     contacts = view.findViewById(R.id.setContact);
     address = view.findViewById(R.id.setAddress);
 
     if(IsGoogleSignIn == true){
         username.setVisibility(View.GONE);
-        password.setVisibility(View.GONE);
+
     }else{
         username.setVisibility(View.VISIBLE);
-        password.setVisibility(View.VISIBLE);
-
     }
 
 
@@ -185,17 +183,17 @@ private void  EditData(){
         public void onClick(DialogInterface dialog, int which) {
 
             String getUsername = username.getText().toString();
-            String getPassword = password.getText().toString();
+
             String Contact = contacts.getText().toString();
             String addresses = address.getText().toString();
 
-            if(getUsername.isEmpty() || getPassword.isEmpty() || Contact.isEmpty() || addresses.isEmpty()){
-                SubmitData(getUsername,getPassword,Contact,addresses);
-                Toast.makeText(getActivity(), "Edit Successfully", Toast.LENGTH_SHORT).show();
+            if(getUsername.isEmpty() ||  Contact.isEmpty() || addresses.isEmpty()){
+
+                Toast.makeText(getActivity(), "Fill In", Toast.LENGTH_SHORT).show();
 
             }else{
-
-                Toast.makeText(getActivity(), "Failed ", Toast.LENGTH_SHORT).show();
+                SubmitData(getUsername,Contact,addresses);
+                Toast.makeText(getActivity(), "Success ", Toast.LENGTH_SHORT).show();
             }
 
 
@@ -210,7 +208,7 @@ private void  EditData(){
 
 }
 
-private void SubmitData( String username,String password, String contacts, String Address){
+private void SubmitData( String username, String contacts, String Address){
     FirebaseUser  user = firebaseAuth.getCurrentUser();
 
 
@@ -227,11 +225,11 @@ private void SubmitData( String username,String password, String contacts, Strin
     }else {
 
         Map<String, Object> Update = new HashMap<>();
-        Update.put("contact", contacts);
-        Update.put("username",username);
+        Update.put("contacts", contacts);
+        Update.put("name",username);
         Update.put("address",Address);
 
-        user.updatePassword(password);
+
 
 
 

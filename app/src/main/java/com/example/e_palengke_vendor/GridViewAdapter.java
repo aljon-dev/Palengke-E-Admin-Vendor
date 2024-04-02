@@ -22,6 +22,20 @@ public class GridViewAdapter  extends BaseAdapter {
     LayoutInflater layoutInflater;
 
 
+    OnItemClickListener onItemClickListener;
+
+    public void SetOnItemClickListener(OnItemClickListener onItemClickListener){
+                this.onItemClickListener = onItemClickListener;
+
+    }
+
+
+    public interface OnItemClickListener{
+
+        void onClick(GridClass gridClass);
+
+    }
+
     public GridViewAdapter(ArrayList<GridClass> itemlist, Context context) {
 
         this.itemlist = itemlist;
@@ -55,9 +69,13 @@ public class GridViewAdapter  extends BaseAdapter {
         TextView nameItem = convertView.findViewById(R.id.ItemName);
         TextView priceItem = convertView.findViewById(R.id.ItemPrice);
 
+
         Glide.with(context).load(itemlist.get(position).getProductImg()).circleCrop().into(gridImage);
-        nameItem.setText(itemlist.get(position).getProductName());
-        priceItem.setText(itemlist.get(position).getPrice());
+        nameItem.setText( itemlist.get(position).getProductName());
+        priceItem.setText(" PHP " + itemlist.get(position).getPrice());
+
+        convertView.setOnClickListener(v -> onItemClickListener.onClick(itemlist.get(position)));
+
 
 
         return convertView;

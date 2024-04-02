@@ -62,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //TextView   Tap Register
+        register = findViewById(R.id.tapregister);
+
 
         auth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
@@ -83,6 +85,16 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         gsc = GoogleSignIn.getClient(this, gso);
+
+
+
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, Register.class);
+                startActivity(intent);
+            }
+        });
 
 
         googleSignInButton.setOnClickListener(new View.OnClickListener() {
@@ -134,17 +146,41 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-
                     FirebaseUser user = auth.getCurrentUser();
                     Users users = new Users();
+
                     users.setUserId(user.getUid());
+                    users.setName("");
+                    users.setContacts("");
+                    users.setAddress("");
+                    users.setProfile("");
 
 
-                    Intent intent = new Intent(MainActivity.this,HomeAdmin.class);
-                    intent.putExtra("id",users.getUserId());
-                    intent.putExtra("email",user.getEmail());
-                    intent.putExtra("IsGoogleSignIn",false);
-                    startActivity(intent);
+                    database.getReference("admin").child(user.getUid()).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if(snapshot.exists()){
+                                Intent intent = new Intent(MainActivity.this,HomeAdmin.class);
+                                intent.putExtra("id",users.getUserId());
+                                intent.putExtra("email",user.getEmail());
+                                intent.putExtra("IsGoogleSignIn",false);
+                                startActivity(intent);
+
+                            }else{
+                                database.getReference("admin").child(user.getUid()).setValue(users);
+
+                            }
+
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
+
 
                 }
                 else{

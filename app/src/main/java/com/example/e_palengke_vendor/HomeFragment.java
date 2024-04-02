@@ -3,6 +3,7 @@ package com.example.e_palengke_vendor;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -58,6 +59,19 @@ public class HomeFragment extends Fragment {
       adapter = new GridViewAdapter(Itemlist,getActivity());
       gridView.setAdapter(adapter);
 
+        // Dashboard
+        NumberProducts = view.findViewById(R.id.NumberProducts);
+
+      adapter.SetOnItemClickListener(new GridViewAdapter.OnItemClickListener() {
+          @Override
+          public void onClick(GridClass gridClass) {
+              AlertDialog.Builder alertdialog = new AlertDialog.Builder(getActivity());
+
+              alertdialog.setTitle("Edit & Delete");
+
+              alertdialog.show();
+          }
+      });
 
 
 
@@ -69,8 +83,11 @@ public class HomeFragment extends Fragment {
 
                   Itemlist.add(gridClass);
 
+
               }
               adapter.notifyDataSetChanged();
+              NumberProducts.setText(String.valueOf(Itemlist.size() ) +" "+ "- " +"Products");
+
           }
 
           @Override
@@ -89,35 +106,6 @@ public class HomeFragment extends Fragment {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-      // Dashboard
-      NumberProducts = view.findViewById(R.id.NumberProducts);
-
-      firebaseDatabase.getReference("admin").child(id).child("Products").addListenerForSingleValueEvent(new ValueEventListener() {
-          @Override
-          public void onDataChange(@NonNull DataSnapshot snapshot) {
-              for(numberOfObjects = 0; numberOfObjects < snapshot.getChildrenCount(); numberOfObjects++){
-                  numberOfObjects++ ;
-
-              }
-              NumberProducts.setText(String.valueOf(numberOfObjects ) +" "+ "- " +"Products");
-          }
-
-          @Override
-          public void onCancelled(@NonNull DatabaseError error) {
-
-          }
-      });
 
 
 

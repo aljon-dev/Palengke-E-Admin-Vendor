@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="0dp"
-            android:text="Hello User"
+            android:text="Welcome Vendor"
             android:textSize="20dp"
 
             />
@@ -47,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:text="0 - Users"
+            android:text="0 - Order"
             android:textSize="20dp"
 
             />
@@ -57,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:text="0 - Delivery History"
+            android:text="0 - Delivered"
             android:textSize="20dp"
 
             />

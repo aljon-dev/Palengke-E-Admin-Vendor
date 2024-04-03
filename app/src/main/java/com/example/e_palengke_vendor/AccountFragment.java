@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -124,6 +125,7 @@ public class AccountFragment extends Fragment {
 
 
 
+
         //OnClick Listener to Edit A data
         EditAccount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -190,10 +192,17 @@ public class AccountFragment extends Fragment {
 
                if(snapshot.exists()){
 
-                   HashMap<String,Object> contact = (HashMap<String,Object>) snapshot.getValue();
+                   HashMap<String,Object> userDetails = (HashMap<String,Object>) snapshot.getValue();
 
-                  Object ContactValue = contact.get("contact");
+                  Object ContactValue = userDetails.get("contact");
                   String ContactData = String.valueOf(ContactValue);
+
+                  Object ImageQr = userDetails.get("GcashQr");
+                  String Qrinfo = (String) ImageQr;
+
+                  Glide.with(getContext()).load(Qrinfo).into(gcashphoto);
+
+
 
                   Contacts.setText(ContactData);
 
@@ -385,4 +394,10 @@ private void SubmitData( String username, String contacts, String Address){
             }
         }
     }
+
+
+
+
+
+
 }

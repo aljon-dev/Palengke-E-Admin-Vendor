@@ -108,32 +108,6 @@
                         android:backgroundTint="@color/black"
                         android:text="Login" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:text="Applying as Vendor?"
-                            android:textColor="@color/white"
-                            android:textSize="20dp" />
-
-
-                        <TextView
-                            android:id="@+id/tapregister"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Register Here "
-                            android:textColor="@color/white"
-                            android:textSize="20dp" />
-
-
-                    </LinearLayout>
-
                     <Button
                         android:id="@+id/GoogleSignin"
                         android:layout_width="wrap_content"

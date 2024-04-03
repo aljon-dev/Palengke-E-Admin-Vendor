@@ -166,6 +166,7 @@ public class AddProducts extends Fragment {
                             AddProduct.put("Price",Price);
                             AddProduct.put("Quantity",Qty);
                             AddProduct.put("ProductImg",Uri);
+                            AddProduct.put("ProductId",timestamp);
 
                             firebaseDatabase.getReference("admin").child(id).child("Products").child(timestamp).setValue(AddProduct).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override

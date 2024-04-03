@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //TextView   Tap Register
-        register = findViewById(R.id.tapregister);
+
 
 
         auth = FirebaseAuth.getInstance();

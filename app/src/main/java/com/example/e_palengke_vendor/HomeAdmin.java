@@ -98,10 +98,14 @@ public class HomeAdmin extends AppCompatActivity  {
 
                     replaceFragment(new AccountFragment(Uid,email,IsGoogleSignIn));
                 }else if(items == R.id.NavAddProduct){
-                   replaceFragment(new AddProducts(Uid));
+
+                  Intent intent = new Intent (HomeAdmin.this, AddProduct.class);
+                  startActivity(intent);
 
                 }else if(items == R.id.NavHistory){
+
                     replaceFragment(new HistoryFragment());
+
                 }else if(items == R.id.NavDelivered){
                     replaceFragment(new DeliveredFragment());
                 }

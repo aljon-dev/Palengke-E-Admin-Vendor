@@ -199,14 +199,13 @@ public class AddProducts extends Fragment {
 
     }
     private void UploadGallery(){
-        Intent PickGallery = new Intent (Intent.ACTION_GET_CONTENT);
-        PickGallery.setType("image/*");
-        if(PickGallery.resolveActivity(requireActivity().getPackageManager()) != null){
-            startActivityForResult(Intent.createChooser(PickGallery,"Select Picture"),REQUEST_GALLERY_PICK);
-        }
-        else{
-            Toast.makeText(getActivity(), "No Gallery App Available", Toast.LENGTH_SHORT).show();
-        }
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("image/*");
+        startActivityForResult(intent, REQUEST_GALLERY_PICK);
+
+
+
 
     }
 
@@ -220,18 +219,18 @@ public class AddProducts extends Fragment {
             bitmap = (Bitmap) bundle.get("data");
             imgview.setImageBitmap(bitmap);
 
-        }
-        if(requestCode == REQUEST_GALLERY_PICK){
-                if(data != null && data.getData() != null){
-                    SelectedImageUri = data.getData();
+        }else  if(requestCode == REQUEST_GALLERY_PICK){
+            if(data != null && data.getData() != null){
+                SelectedImageUri = data.getData();
 
-                    try{
-                        bitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(),SelectedImageUri);
-                        imgview.setImageBitmap(bitmap);
-                    }catch(IOException e){
-                        Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
-                    }
+                try{
+                    bitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(),SelectedImageUri);
+                    imgview.setImageBitmap(bitmap);
+                }catch(IOException e){
+                    Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
                 }
+            }
+
         }
     }
 
@@ -239,7 +238,7 @@ public class AddProducts extends Fragment {
         ActivityCompat.requestPermissions(requireActivity(),new String[]{Manifest.permission.CAMERA},CAMERA_PERMISSION);
     }
     private void requestStoragePermission(){
-        ActivityCompat.requestPermissions(requireActivity(),new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},STORAGE_PERMISSION);
+        ActivityCompat.requestPermissions(requireActivity(),new String[]{Manifest.permission.READ_EXTERNAL_STORAGE },STORAGE_PERMISSION);
     }
 
     @Override
@@ -253,7 +252,7 @@ public class AddProducts extends Fragment {
             }
 
             }else if(requestCode == STORAGE_PERMISSION){
-            if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED &&  grantResults[1] == PackageManager.PERMISSION_GRANTED){
                 UploadGallery();
             }else{
                 Toast.makeText(getActivity(), "Storage Permission Denied", Toast.LENGTH_SHORT).show();
@@ -263,13 +262,13 @@ public class AddProducts extends Fragment {
     }
 
     private boolean CheckCameraPermission(){
-        return ContextCompat.checkSelfPermission(requireContext(),Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+        return ContextCompat.checkSelfPermission(requireActivity(),Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
 
     }
 
     private Boolean CheckGalleryPermission(){
-        return ContextCompat.checkSelfPermission(requireContext(),Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
-               ContextCompat.checkSelfPermission(requireContext(),Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        return ContextCompat.checkSelfPermission(requireActivity(),Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+
     }
 
 

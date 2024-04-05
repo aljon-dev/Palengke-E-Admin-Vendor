@@ -311,8 +311,6 @@ private void SubmitData( String username, String contacts, String Address){
 
                 SelectedImageUri = data.getData();
 
-
-
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), SelectedImageUri);
                     gcashphoto.setImageBitmap(bitmap);
@@ -375,20 +373,25 @@ private void SubmitData( String username, String contacts, String Address){
     }
 
     private void UploadQR(){
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-        if(intent.resolveActivity(requireActivity().getPackageManager()) != null){
-            startActivityForResult(Intent.createChooser(intent,"Find Gcash QR"),UploadGcash);
-        }else{
-            Toast.makeText(getActivity(), "Gallery not found", Toast.LENGTH_SHORT).show();
-        }
+
+            Intent PickGallery = new Intent (Intent.ACTION_OPEN_DOCUMENT);
+            PickGallery.addCategory(Intent.CATEGORY_OPENABLE);
+            PickGallery.setType("image/*");
+
+            startActivityForResult(Intent.createChooser(PickGallery,"Select Picture"),UploadGcash);
+
+
+
+
+
+
 
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == UploadGcash){
+        if(requestCode == STORAGE_PERMISSION){
             if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 UploadQR();
             }

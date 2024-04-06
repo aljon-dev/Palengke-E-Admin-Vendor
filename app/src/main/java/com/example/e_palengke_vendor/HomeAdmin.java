@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +24,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 
 public class HomeAdmin extends AppCompatActivity  {
 
@@ -37,10 +42,13 @@ public class HomeAdmin extends AppCompatActivity  {
 
     NavigationView nav;
 
-    TextView nametxt;
+    TextView nametxt, NumberProducts;
 
+    ArrayList<GridClass> Itemlist;
+    GridView gridView;
 
-    FragmentManager fragmentManager;
+    GridViewAdapter adapter;
+
 
 
 
@@ -77,6 +85,40 @@ public class HomeAdmin extends AppCompatActivity  {
         Boolean IsGoogleSignIn = getIntent().getBooleanExtra("IsGoogleSignIn",true);
         NavigationUser(Uid);
 
+
+        //Display Dashboard
+
+        NumberProducts = findViewById(R.id.NumberProducts);
+
+        gridView = findViewById(R.id.gridView);
+        Itemlist = new ArrayList<>();
+        adapter = new GridViewAdapter(Itemlist,this);
+        gridView.setAdapter(adapter);
+
+        database.getReference("admin").child(Uid).child("Products").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot snapshots : snapshot.getChildren()){
+                    GridClass gridClass = snapshots.getValue(GridClass.class);
+                    Itemlist.add(gridClass);
+                }
+
+
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+
+
+
+
+
         //nav bar Btn
         Btn = findViewById(R.id.imageBtn);
 
@@ -93,10 +135,14 @@ public class HomeAdmin extends AppCompatActivity  {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int items = item.getItemId();
                 if(items == R.id.NavHome){
-                    replaceFragment(new HomeFragment(Uid));
-                }else if(items == R.id.NavAccount){
+                    Toast.makeText(HomeAdmin.this, "You Already in Home ", Toast.LENGTH_SHORT).show();
 
-                    replaceFragment(new AccountFragment(Uid,email,IsGoogleSignIn));
+                }else if(items == R.id.NavAccount){
+                    Intent intent = new Intent (HomeAdmin.this, AccountActivity.class);
+                    intent.putExtra("UserId",Uid);
+                    intent.putExtra("UserEmail",email);
+                    startActivity(intent);
+
                 }else if(items == R.id.NavAddProduct){
 
                   Intent intent = new Intent (HomeAdmin.this, AddProduct.class);
@@ -104,10 +150,10 @@ public class HomeAdmin extends AppCompatActivity  {
 
                 }else if(items == R.id.NavHistory){
 
-                    replaceFragment(new HistoryFragment());
+
 
                 }else if(items == R.id.NavDelivered){
-                    replaceFragment(new DeliveredFragment());
+
                 }
 
                 else if(items == R.id.LogOut){
@@ -123,10 +169,7 @@ public class HomeAdmin extends AppCompatActivity  {
             }
         });
 
-        //Fragmentmanager
 
-      fragmentManager = getSupportFragmentManager();
-        replaceFragment(new HomeFragment(Uid));
 
 
     }
@@ -162,15 +205,7 @@ public class HomeAdmin extends AppCompatActivity  {
 
 
 
-    private void replaceFragment(Fragment fragment){
-        FragmentManager Fragment = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = Fragment.beginTransaction();
-        fragmentTransaction.replace(R.id.frameLayout,fragment);
-        fragmentTransaction.commit();
 
-
-
-    }
 
 
 }

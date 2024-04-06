@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
 
                     users.setUserId(user.getUid());
                     users.setName("");
-                    users.setContacts("");
+                    users.setContact("");
                     users.setAddress("");
                     users.setProfile("");
 

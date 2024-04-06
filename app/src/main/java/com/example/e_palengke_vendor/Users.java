@@ -7,7 +7,7 @@ public class Users {
     String name;
     String profile;
 
-    String Contacts;
+    String Contact;
 
     String address;
 
@@ -42,12 +42,12 @@ public class Users {
         this.profile = profile;
     }
 
-    public String getContacts() {
-        return Contacts;
+    public String getContact() {
+        return Contact;
     }
 
-    public void setContacts(String contacts) {
-        Contacts = contacts;
+    public void setContact(String contact) {
+        Contact = contact;
     }
 
     public String getAddress() {

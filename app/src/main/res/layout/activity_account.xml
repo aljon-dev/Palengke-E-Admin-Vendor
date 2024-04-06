@@ -5,9 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/slidedraw"
-    tools:context=".HomeAdmin">
+    tools:context=".AccountActivity">
+
+
+
     <include
-        layout="@layout/activty_homecontent"
+        layout="@layout/accountcontent"
         />
 
 

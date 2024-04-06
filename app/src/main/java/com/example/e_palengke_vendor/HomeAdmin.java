@@ -145,8 +145,12 @@ public class HomeAdmin extends AppCompatActivity  {
 
                 }else if(items == R.id.NavAddProduct){
 
-                  Intent intent = new Intent (HomeAdmin.this, AddProduct.class);
-                  startActivity(intent);
+
+                    Intent intent = new Intent (HomeAdmin.this, AddProduct.class);
+                    intent.putExtra("UserId",Uid);
+                    intent.putExtra("UserEmail",email);
+                    startActivity(intent);
+
 
                 }else if(items == R.id.NavHistory){
 

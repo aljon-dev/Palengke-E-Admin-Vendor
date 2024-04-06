@@ -187,38 +187,43 @@ public class AccountActivity extends AppCompatActivity {
     }
 
 
-  private boolean isStoragePermissionGranted(){
-        return ContextCompat.checkSelfPermission(AccountActivity.this,Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-  }
+    private boolean isStoragePermissionGranted(){
+        return ContextCompat.checkSelfPermission(AccountActivity.this, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+    }
 
-  private void requestStoragePermission(){
+    private void requestStoragePermission(){
         ActivityCompat.requestPermissions(AccountActivity.this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},STORAGE_PERMISSION);
-  }
+    }
 
-  private void openGalleryIntent(){
+    private void openGalleryIntent(){
         Intent gallery  = new Intent(Intent.ACTION_PICK);
         gallery.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(gallery, UploadGcash);
-  }
+        startActivityForResult(gallery,UploadGcash);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == UploadGcash && resultCode == RESULT_OK){
-            SelectedImageUri = data.getData();
-
-            try {
-                Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(AccountActivity.this.getContentResolver(), SelectedImageUri);
-                gcashphoto.setImageBitmap(imageBitmap);
-
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        if(requestCode == UploadGcash){
 
         }
 
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == STORAGE_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openGalleryIntent();
+            } else {
+                Toast.makeText(this, "Permission Denied ", Toast.LENGTH_SHORT).show();
+            }
 
         }
+        }
+    }
+
+
+
 

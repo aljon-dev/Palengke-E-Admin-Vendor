@@ -7,6 +7,7 @@
         android:required="false" />
 
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -20,7 +21,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EPalengke_Vendor"
-        tools:targetApi="31">
+        tools:targetApi="34">
         <activity
             android:name=".AccountActivity"
             android:exported="false" />
@@ -30,9 +31,7 @@
         <activity
             android:name=".AddProduct"
             android:exported="false" />
-        <activity
-            android:name=".Register"
-            android:exported="false" />
+
         <activity
             android:name=".HomeAdmin"
             android:exported="false" />

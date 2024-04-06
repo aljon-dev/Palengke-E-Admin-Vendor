@@ -66,12 +66,10 @@ public class AddProduct extends AppCompatActivity {
     Uri SelectedImageUri;
 
 
-    int REQUEST_CAMERA_PICK = 20;
-    int REQUEST_GALLERY_PICK = 40;
-
-    int CAMERA_PERMISSION = 100;
-    int STORAGE_PERMISSION = 101;
-
+    private static final int REQUEST_CAMERA_PERMISSION = 101;
+    private static final int REQUEST_GALLERY_PERMISSION = 102;
+    private static final int REQUEST_CAMERA_CAPTURE = 103;
+    private static final int REQUEST_GALLERY_PICK = 104;
 
 
     @Override
@@ -106,7 +104,36 @@ public class AddProduct extends AppCompatActivity {
         uploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SelectActionDialog();
+                CharSequence ActionSelect [] =  {"Camera","Gallery"};
+                android.app.AlertDialog.Builder alertDialog = new AlertDialog.Builder(AddProduct.this);
+
+                alertDialog.setTitle("Select Action");
+
+                alertDialog.setItems(ActionSelect, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(which == 0){
+                            if(CheckCameraPermission()){
+                                UploadUsingCamera();
+
+                            }else {
+
+                                RequestCameraPermission();
+                            }
+                        }else if( which == 1){
+                            if(CheckGalleryPermission()){
+
+                                UploadGallery();
+                            }else{
+                                requestStoragePermission();
+
+                            }
+                        }
+                    }
+                });
+
+                alertDialog.show();
+
             }
         });
 
@@ -125,9 +152,6 @@ public class AddProduct extends AppCompatActivity {
                 }else{
                     AddProduct(bitmap,prodname,prodDesc,Categories,productprice,productQty,id);
                 }
-
-
-
             }
         });
 
@@ -186,24 +210,13 @@ public class AddProduct extends AppCompatActivity {
     }
 
     private void UploadUsingCamera(){
-        Intent UploadImages = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if(UploadImages.resolveActivity(AddProduct.this.getPackageManager())!= null){
-            startActivityForResult(UploadImages,REQUEST_CAMERA_PICK);
-
-        }else{
-
-            Toast.makeText(AddProduct.this, "NO CAMERA FOUND ", Toast.LENGTH_SHORT).show();
-        }
-
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(cameraIntent, REQUEST_CAMERA_CAPTURE);
     }
     private void UploadGallery(){
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("image/*");
-        startActivityForResult(intent, REQUEST_GALLERY_PICK);
 
-
-
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(galleryIntent, REQUEST_GALLERY_PICK);
 
     }
 
@@ -212,7 +225,7 @@ public class AddProduct extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == REQUEST_CAMERA_PICK){
+        if(requestCode == REQUEST_CAMERA_CAPTURE){
             Bundle bundle = data.getExtras();
             bitmap = (Bitmap) bundle.get("data");
             imgview.setImageBitmap(bitmap);
@@ -233,31 +246,34 @@ public class AddProduct extends AppCompatActivity {
     }
 
     private void RequestCameraPermission(){
-        ActivityCompat.requestPermissions(AddProduct.this,new String[]{Manifest.permission.CAMERA},CAMERA_PERMISSION);
+        ActivityCompat.requestPermissions(AddProduct.this,new String[]{Manifest.permission.CAMERA},REQUEST_CAMERA_PERMISSION);
+
     }
     private void requestStoragePermission(){
-        ActivityCompat.requestPermissions(AddProduct.this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE },STORAGE_PERMISSION);
+        ActivityCompat.requestPermissions(AddProduct.this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE },REQUEST_GALLERY_PERMISSION);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == CAMERA_PERMISSION){
-            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                UploadUsingCamera();
-            }else{
-                Toast.makeText(AddProduct.this, "CAMERA PERMISSION DENIED", Toast.LENGTH_SHORT).show();
+        if (requestCode == REQUEST_CAMERA_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+               UploadUsingCamera();
+            } else {
+                Toast.makeText(this, "Camera permission denied", Toast.LENGTH_SHORT).show();
             }
-
-        }else if(requestCode == STORAGE_PERMISSION){
-            if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED &&  grantResults[1] == PackageManager.PERMISSION_GRANTED){
-                UploadGallery();
-            }else{
-                Toast.makeText(AddProduct.this, "Storage Permission Denied", Toast.LENGTH_SHORT).show();
+        } else if (requestCode == REQUEST_GALLERY_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+              UploadGallery();
+            } else {
+                Toast.makeText(this, "Gallery permission denied", Toast.LENGTH_SHORT).show();
             }
         }
 
-    }
+
+        }
+
+
 
     private boolean CheckCameraPermission(){
         return ContextCompat.checkSelfPermission(AddProduct.this,Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
@@ -272,49 +288,17 @@ public class AddProduct extends AppCompatActivity {
 
     private void SelectActionDialog(){
 
-        CharSequence ActionSelect [] =  {"Camera","Gallery"};
-        android.app.AlertDialog.Builder alertDialog = new AlertDialog.Builder(AddProduct.this);
-
-        alertDialog.setTitle("Select Action");
-
-        alertDialog.setItems(ActionSelect, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-
-                if(which == 0) {
-
-                    if(CheckCameraPermission()){
-                        UploadUsingCamera();
-                    }else{
-                        RequestCameraPermission();
-                    }
-
-                }else if (which == 1) {
-                    if(CheckGalleryPermission()){
-                        UploadGallery();
-                    }else{
-                        requestStoragePermission();
-                    }
-                }
-
-
 
             }
 
-        });
-        alertDialog.show();
+            private void Successfull() {
 
-
-    }
-    private void Successfull(){
-
-        productname.setText("");
-        productqty.setText("");
-        prodprice.setText("");
-        productcategory.setText("");
-        productdesc.setText("");
-    }
+                productname.setText("");
+                productqty.setText("");
+                prodprice.setText("");
+                productcategory.setText("");
+                productdesc.setText("");
+            }
 
 
 }

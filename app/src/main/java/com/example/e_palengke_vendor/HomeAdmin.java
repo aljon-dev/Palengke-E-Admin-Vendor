@@ -102,7 +102,7 @@ public class HomeAdmin extends AppCompatActivity  {
                     GridClass gridClass = snapshots.getValue(GridClass.class);
                     Itemlist.add(gridClass);
                 }
-
+                NumberProducts.setText(Itemlist.size() + " - " + "Products");
 
                 adapter.notifyDataSetChanged();
             }

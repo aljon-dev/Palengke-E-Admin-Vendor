@@ -24,7 +24,7 @@ public class GridViewAdapter  extends BaseAdapter {
 
     OnItemClickListener onItemClickListener;
 
-    public void SetOnItemClickListener(OnItemClickListener onItemClickListener){
+    public void OnItemClickListener(OnItemClickListener onItemClickListener){
                 this.onItemClickListener = onItemClickListener;
 
     }

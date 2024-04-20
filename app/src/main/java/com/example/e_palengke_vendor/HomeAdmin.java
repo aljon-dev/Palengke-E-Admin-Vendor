@@ -1,6 +1,7 @@
 package com.example.e_palengke_vendor;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -17,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,23 +34,23 @@ import java.util.ArrayList;
 
 public class HomeAdmin extends AppCompatActivity  {
 
-    FirebaseAuth auth;
+   private FirebaseAuth auth;
 
-    FirebaseDatabase database;
+   private FirebaseDatabase database;
 
-    ImageView imageView, Btn;
+    private   ImageView imageView, Btn;
 
 
-    DrawerLayout  drawer;
+    private   DrawerLayout  drawer;
 
-    NavigationView nav;
+    private  NavigationView nav;
 
-    TextView nametxt, NumberProducts;
+    private  TextView nametxt, NumberProducts;
 
-    ArrayList<GridClass> Itemlist;
-    GridView gridView;
+    private   ArrayList<GridClass> Itemlist;
+    private  GridView gridView;
 
-    GridViewAdapter adapter;
+    private   GridViewAdapter adapter;
 
 
 
@@ -91,9 +94,23 @@ public class HomeAdmin extends AppCompatActivity  {
         NumberProducts = findViewById(R.id.NumberProducts);
 
         gridView = findViewById(R.id.gridView);
+
         Itemlist = new ArrayList<>();
         adapter = new GridViewAdapter(Itemlist,this);
         gridView.setAdapter(adapter);
+
+       adapter.OnItemClickListener(new GridViewAdapter.OnItemClickListener() {
+           @Override
+           public void onClick(GridClass gridClass) {
+               AlertDialog.Builder EditDialog = new AlertDialog.Builder(HomeAdmin.this);
+               EditDialog.setTitle("Update Product");
+
+
+               EditDialog.show();
+           }
+       });
+
+
 
         database.getReference("admin").child(Uid).child("Products").addValueEventListener(new ValueEventListener() {
             @Override
@@ -206,6 +223,46 @@ public class HomeAdmin extends AppCompatActivity  {
             }
         });
     }
+
+
+    private void Delete(String id){
+
+
+        database.getReference("admin").child(id).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(HomeAdmin.this, "Deleted", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(HomeAdmin.this, "Failed To Delete", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+
+    }
+
+
+
+
+    private void EditProduct(){
+
+        AlertDialog.Builder EditDialog = new  AlertDialog.Builder(HomeAdmin.this);
+
+
+        EditDialog.setTitle("Edit");
+
+
+
+
+
+
+
+
+
+    }
+
 
 
 

@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridView;
@@ -22,16 +23,20 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HomeAdmin extends AppCompatActivity  {
 
@@ -91,6 +96,8 @@ public class HomeAdmin extends AppCompatActivity  {
         adapter = new GridViewAdapter(Itemlist,this);
         gridView.setAdapter(adapter);
 
+
+        // Adapter Set On Click Appear a Dialog to delete or Edit Prices etc.
        adapter.OnItemClickListener(new GridViewAdapter.OnItemClickListener() {
            @Override
            public void onClick(GridClass gridClass) {
@@ -106,6 +113,8 @@ public class HomeAdmin extends AppCompatActivity  {
                    public void onClick(DialogInterface dialog, int which) {
                             if(which == 0){
 
+                                EditProduct(Uid,gridClass.getProductId());
+
                             }else if(which == 1){
                                 Delete(Uid,gridClass.getProductId());
                             }
@@ -118,7 +127,7 @@ public class HomeAdmin extends AppCompatActivity  {
        });
 
 
-
+        // Display All Products and Dashboard
         database.getReference("admin").child(Uid).child("Products").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -126,8 +135,8 @@ public class HomeAdmin extends AppCompatActivity  {
                     GridClass gridClass = snapshots.getValue(GridClass.class);
                     Itemlist.add(gridClass);
                 }
-                NumberProducts.setText(Itemlist.size() + " - " + "Products");
 
+                NumberProducts.setText(Itemlist.size() + " - " + "Products");
                 adapter.notifyDataSetChanged();
 
             }
@@ -137,12 +146,6 @@ public class HomeAdmin extends AppCompatActivity  {
 
             }
         });
-
-
-
-
-
-
 
         //nav bar Btn
         Btn = findViewById(R.id.imageBtn);
@@ -169,7 +172,6 @@ public class HomeAdmin extends AppCompatActivity  {
                     startActivity(intent);
 
                 }else if(items == R.id.NavAddProduct){
-
 
                     Intent intent = new Intent (HomeAdmin.this, AddProduct.class);
                     intent.putExtra("UserId",Uid);
@@ -234,7 +236,7 @@ public class HomeAdmin extends AppCompatActivity  {
 
 
     private void Delete(String UserId,String id){
-
+            // Delete Products
 
         database.getReference("admin").child(UserId).child("Products").child(id).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -251,12 +253,64 @@ public class HomeAdmin extends AppCompatActivity  {
 
 
 
-    private void EditProduct(){
+    private void EditProduct(String Uid,String id){
+
+        // Edit Price and Quantities
 
         AlertDialog.Builder EditDialog = new  AlertDialog.Builder(HomeAdmin.this);
+        View view = LayoutInflater.from(HomeAdmin.this).inflate(R.layout.updateproduct,null,false);
 
+        TextInputEditText  priceproduct,productQuantities;
+
+        priceproduct = view.findViewById(R.id.UpdatePrices);
+        productQuantities = view.findViewById(R.id.UpdateQuantities);
+
+        EditDialog.setView(view);
 
         EditDialog.setTitle("Edit");
+
+        //Display Current Data of the product thru SetText
+
+     database.getReference("admin").child(Uid).child("Products").child(id).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                HashMap<String,Object> ProductInfo = (HashMap<String, Object>) snapshot.getValue();
+                Object myprice = ProductInfo.get("Price");
+                Object MyQty = ProductInfo.get("Quantity");
+
+                priceproduct.setText(myprice.toString());
+                productQuantities.setText(MyQty.toString());
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+        EditDialog.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String updatedPrice = priceproduct.getText().toString().trim();
+                String UpdateQty = productQuantities.getText().toString().trim();
+
+                HashMap <String,Object> UpdateProduct = new HashMap<>();
+                UpdateProduct.put("Price",updatedPrice);
+                UpdateProduct.put("Quantity",UpdateQty);
+
+
+                database.getReference("admin").child(Uid).child("Products").child(id).updateChildren(UpdateProduct);
+                recreate();
+
+            }
+        });
+
+
+        EditDialog.show();
+
+
 
 
 

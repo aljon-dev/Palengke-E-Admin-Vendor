@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -40,7 +41,6 @@ public class HomeAdmin extends AppCompatActivity  {
 
     private   ImageView imageView, Btn;
 
-
     private   DrawerLayout  drawer;
 
     private  NavigationView nav;
@@ -51,14 +51,6 @@ public class HomeAdmin extends AppCompatActivity  {
     private  GridView gridView;
 
     private   GridViewAdapter adapter;
-
-
-
-
-
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,8 +94,23 @@ public class HomeAdmin extends AppCompatActivity  {
        adapter.OnItemClickListener(new GridViewAdapter.OnItemClickListener() {
            @Override
            public void onClick(GridClass gridClass) {
+
+               CharSequence SelectAction []  = {"Edit","Delete"};
+
                AlertDialog.Builder EditDialog = new AlertDialog.Builder(HomeAdmin.this);
                EditDialog.setTitle("Update Product");
+
+
+               EditDialog.setItems(SelectAction, new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialog, int which) {
+                            if(which == 0){
+
+                            }else if(which == 1){
+                                Delete(Uid,gridClass.getProductId());
+                            }
+                   }
+               });
 
 
                EditDialog.show();
@@ -122,6 +129,7 @@ public class HomeAdmin extends AppCompatActivity  {
                 NumberProducts.setText(Itemlist.size() + " - " + "Products");
 
                 adapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -225,24 +233,21 @@ public class HomeAdmin extends AppCompatActivity  {
     }
 
 
-    private void Delete(String id){
+    private void Delete(String UserId,String id){
 
 
-        database.getReference("admin").child(id).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+        database.getReference("admin").child(UserId).child("Products").child(id).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
                     Toast.makeText(HomeAdmin.this, "Deleted", Toast.LENGTH_SHORT).show();
+                    recreate();
                 }else{
                     Toast.makeText(HomeAdmin.this, "Failed To Delete", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
-
-
     }
-
 
 
 

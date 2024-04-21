@@ -6,6 +6,7 @@ public class GridClass {
     String Price;
     String ProductName;
 
+    String ProductId;
     String ProductImg;
 
     public GridClass(){
@@ -22,5 +23,9 @@ public class GridClass {
 
     public String getProductImg() {
         return ProductImg;
+    }
+
+    public String getProductId(){
+        return ProductId;
     }
 }

@@ -65,6 +65,9 @@ public class GridViewAdapter  extends BaseAdapter {
 
         convertView = layoutInflater.inflate(R.layout.griditems, null, false);
 
+
+
+
         ImageView gridImage = convertView.findViewById(R.id.ItemImage);
         TextView nameItem = convertView.findViewById(R.id.ItemName);
         TextView priceItem = convertView.findViewById(R.id.ItemPrice);

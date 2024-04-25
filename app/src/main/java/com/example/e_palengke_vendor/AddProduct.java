@@ -100,6 +100,13 @@ public class AddProduct extends AppCompatActivity {
         Addproduct = findViewById(R.id.addProduct);
 
 
+        productcategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setCategories();
+            }
+        });
+
 
         uploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,7 +202,7 @@ public class AddProduct extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
                                     Toast.makeText(AddProduct.this, "Uploaded", Toast.LENGTH_SHORT).show();
-
+                                    Successfull();
                                 }else{
                                     Toast.makeText(AddProduct.this, "Failed To Upload ", Toast.LENGTH_SHORT).show();
                                 }
@@ -286,19 +293,33 @@ public class AddProduct extends AppCompatActivity {
     }
 
 
-    private void SelectActionDialog(){
+    private void Successfull() {
 
+        productname.setText("");
+        productqty.setText("");
+        prodprice.setText("");
+        productcategory.setText("");
+        productdesc.setText("");
 
             }
 
-            private void Successfull() {
+    private void setCategories(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(AddProduct.this);
 
-                productname.setText("");
-                productqty.setText("");
-                prodprice.setText("");
-                productcategory.setText("");
-                productdesc.setText("");
+        alertDialogBuilder.setTitle("Select Category");
+
+        final String[] categories = Constants.productCategories;
+
+        alertDialogBuilder.setItems(categories, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                productcategory.setText(categories[which]);
             }
+        });
+        alertDialogBuilder.show();
+
+    }
+
 
 
 }

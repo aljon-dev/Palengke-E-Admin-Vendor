@@ -27,9 +27,6 @@
             android:layout_height="85dp"
             android:scaleType="centerCrop"/>
 
-
-
-
         <TextView
 
             android:id="@+id/ItemName"

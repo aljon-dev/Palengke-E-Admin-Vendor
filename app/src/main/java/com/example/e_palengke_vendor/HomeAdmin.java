@@ -306,20 +306,7 @@ public class HomeAdmin extends AppCompatActivity  {
 
             }
         });
-
-
         EditDialog.show();
-
-
-
-
-
-
-
-
-
-
-
     }
 
 

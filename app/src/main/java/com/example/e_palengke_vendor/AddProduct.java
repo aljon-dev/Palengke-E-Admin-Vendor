@@ -129,7 +129,13 @@ public class AddProduct extends AppCompatActivity {
                                 RequestCameraPermission();
                             }
                         }else if( which == 1) {
-                            UploadGallery();
+                            if(CheckGalleryPermission()){
+                                    UploadGallery();
+                            }else if(Build.VERSION.SDK_INT <= 33){
+                                requestStoragePermission();
+                            }else{
+                                requestMediaImages();
+                            }
                         }
                     }
                 });
@@ -252,8 +258,13 @@ public class AddProduct extends AppCompatActivity {
 
     }
     private void requestStoragePermission(){
-        ActivityCompat.requestPermissions(AddProduct.this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE },REQUEST_GALLERY_PERMISSION);
+        ActivityCompat.requestPermissions(AddProduct.this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},REQUEST_GALLERY_PERMISSION);
     }
+
+    private void requestMediaImages(){
+        ActivityCompat.requestPermissions(AddProduct.this,new String[]{Manifest.permission.READ_MEDIA_IMAGES},REQUEST_GALLERY_PERMISSION);
+    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

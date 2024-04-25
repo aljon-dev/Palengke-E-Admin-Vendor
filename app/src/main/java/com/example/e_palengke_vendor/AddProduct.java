@@ -100,12 +100,6 @@ public class AddProduct extends AppCompatActivity {
         Addproduct = findViewById(R.id.addProduct);
 
 
-        productcategory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setCategories();
-            }
-        });
 
 
         uploadImage.setOnClickListener(new View.OnClickListener() {
@@ -202,7 +196,7 @@ public class AddProduct extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
                                     Toast.makeText(AddProduct.this, "Uploaded", Toast.LENGTH_SHORT).show();
-                                    Successfull();
+
                                 }else{
                                     Toast.makeText(AddProduct.this, "Failed To Upload ", Toast.LENGTH_SHORT).show();
                                 }

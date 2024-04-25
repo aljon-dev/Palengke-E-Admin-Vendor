@@ -31,6 +31,14 @@
           }
         },
         {
+          "client_id": "183891219096-tmb0qplpa1uorhopgtb4u1sp40sdphg8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.e_palengke_vendor",
+            "certificate_hash": "e02adafe1a6d6b8aa04815ead69855e18fd45bf6"
+          }
+        },
+        {
           "client_id": "183891219096-odedevc2p1aaac3h4875lpskq05i3mac.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -59,6 +67,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "183891219096-8ps27dcfl7dldclmeolj8sfic8sd72fg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.e_streets",
+            "certificate_hash": "e02adafe1a6d6b8aa04815ead69855e18fd45bf6"
+          }
+        },
         {
           "client_id": "183891219096-e2ioj8c6vgjrfuismdjjuli52io29rfd.apps.googleusercontent.com",
           "client_type": 1,

@@ -14,6 +14,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -117,7 +118,9 @@ public class AccountActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(isStoragePermissionGranted()){
                     openGalleryIntent();
-                }else{
+                }else if (Build.VERSION.SDK_INT <= 33){
+                    requestStoragePermission();
+                }else {
                     requestImageMediaPermission();
                 }
             }
@@ -196,6 +199,8 @@ public class AccountActivity extends AppCompatActivity {
     private void requestImageMediaPermission(){
                 ActivityCompat.requestPermissions(AccountActivity.this,new String[]{Manifest.permission.READ_MEDIA_IMAGES},STORAGE_PERMISSION);
     }
+
+
 
     private void openGalleryIntent(){
         Intent gallery  = new Intent(Intent.ACTION_PICK);

@@ -206,6 +206,22 @@ public class AccountActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == UploadGcash){
 
+            SelectedImageUri = data.getData();
+            if(data != null && data.getData() != null ){
+
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),SelectedImageUri);
+                    gcashphoto.setImageBitmap(bitmap);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+
+            }else{
+
+            }
+
+
         }
 
     }

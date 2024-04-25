@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
@@ -127,14 +128,8 @@ public class AddProduct extends AppCompatActivity {
 
                                 RequestCameraPermission();
                             }
-                        }else if( which == 1){
-                            if(CheckGalleryPermission()){
-
-                                UploadGallery();
-                            }else{
-                                requestStoragePermission();
-
-                            }
+                        }else if( which == 1) {
+                            UploadGallery();
                         }
                     }
                 });

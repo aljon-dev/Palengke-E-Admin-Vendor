@@ -51,6 +51,8 @@ public class AccountActivity extends AppCompatActivity {
 
     int STORAGE_PERMISSION = 40;
 
+
+
     Uri SelectedImageUri;
 
 
@@ -69,7 +71,7 @@ public class AccountActivity extends AppCompatActivity {
         //User, Email get Intent from the Previous Activity
         String id = getIntent().getStringExtra("UserId");
         String useremail = getIntent().getStringExtra("UserEmail");
-
+        Boolean IsGoogleSignIn = getIntent().getBooleanExtra("IsGoogleSignIn",true);
 
 
         // Firebase database
@@ -116,7 +118,7 @@ public class AccountActivity extends AppCompatActivity {
                 if(isStoragePermissionGranted()){
                     openGalleryIntent();
                 }else{
-                    requestStoragePermission();
+                    requestImageMediaPermission();
                 }
             }
         });
@@ -171,6 +173,7 @@ public class AccountActivity extends AppCompatActivity {
                 Contacts.setText(userContact);
                 UserAddress.setText(userAddress);
 
+
             }
 
             @Override
@@ -188,6 +191,10 @@ public class AccountActivity extends AppCompatActivity {
 
     private void requestStoragePermission(){
         ActivityCompat.requestPermissions(AccountActivity.this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},STORAGE_PERMISSION);
+    }
+
+    private void requestImageMediaPermission(){
+                ActivityCompat.requestPermissions(AccountActivity.this,new String[]{Manifest.permission.READ_MEDIA_IMAGES},STORAGE_PERMISSION);
     }
 
     private void openGalleryIntent(){
@@ -211,9 +218,8 @@ public class AccountActivity extends AppCompatActivity {
                     throw new RuntimeException(e);
                 }
 
-
             }else{
-
+                Toast.makeText(this, "Failed to upload", Toast.LENGTH_SHORT).show();
             }
 
 
@@ -230,9 +236,28 @@ public class AccountActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "Permission Denied ", Toast.LENGTH_SHORT).show();
             }
+        }
+        }
+
+        private void changePassword(){
+
 
         }
+
+        private void changeUsername(){
+
         }
+
+        private void changeAddress(){
+
+        }
+
+        private void changeContact(){
+
+        }
+
+
+
     }
 
 

@@ -169,6 +169,7 @@ public class HomeAdmin extends AppCompatActivity  {
                     Intent intent = new Intent (HomeAdmin.this, AccountActivity.class);
                     intent.putExtra("UserId",Uid);
                     intent.putExtra("UserEmail",email);
+                    intent.putExtra("IsGoogleSignIn",IsGoogleSignIn);
                     startActivity(intent);
 
                 }else if(items == R.id.NavAddProduct){

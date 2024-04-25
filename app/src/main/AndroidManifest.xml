@@ -23,9 +23,7 @@
         <activity
             android:name=".AccountActivity"
             android:exported="false" />
-        <activity
-            android:name=".AddProducts"
-            android:exported="false" />
+
         <activity
             android:name=".AddProduct"
             android:exported="false" />

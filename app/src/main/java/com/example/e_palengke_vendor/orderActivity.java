@@ -1,5 +1,6 @@
 package com.example.e_palengke_vendor;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -54,7 +55,10 @@ public class orderActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new BuyerAdapter.onItemClickListener() {
             @Override
             public void onItemClick(BuyerModel buyerModel) {
-
+                Intent intent = new Intent(orderActivity.this,ReceiptList.class);
+                intent.putExtra("UserId",id);
+                intent.putExtra("BuyerId",buyerModel.getBuyerId());
+                startActivity(intent);
             }
         });
 

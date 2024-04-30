@@ -18,6 +18,16 @@ public class BuyerAdapter extends RecyclerView.Adapter<BuyerAdapter.ItemHolder> 
     private Context context;
     private ArrayList<BuyerModel> BuyerList;
 
+
+    onItemClickListener onItemClickListener;
+
+    public void setOnItemClickListener(onItemClickListener onItemClickListener){
+        this.onItemClickListener = onItemClickListener;
+    }
+    public interface onItemClickListener{
+       void onItemClick(BuyerModel buyerModel);
+    }
+
     public BuyerAdapter(Context context, ArrayList<BuyerModel> BuyerList){
 
         this.context = context;
@@ -27,14 +37,16 @@ public class BuyerAdapter extends RecyclerView.Adapter<BuyerAdapter.ItemHolder> 
 
     @NonNull
     @Override
-    public BuyerAdapter.ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.buyerlist,parent,false);
         return new ItemHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BuyerAdapter.ItemHolder holder, int position) {
-
+    public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
+            BuyerModel buyerModel = BuyerList.get(position);
+            holder.onBind(buyerModel);
+            holder.itemView.setOnClickListener(v -> onItemClickListener.onItemClick(BuyerList.get(position)));
     }
 
     @Override

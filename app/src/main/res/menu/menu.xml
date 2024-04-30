@@ -16,6 +16,12 @@
         </item>
 
 
+        <item
+            android:id="@+id/NavOrder"
+            android:title="Order">
+
+        </item>
+
 
 
         <item

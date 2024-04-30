@@ -1,6 +1,6 @@
 package com.example.e_palengke_vendor;
 
-public class OrderModel {
+public class ProductModel {
 
     String Description;
     String Price;
@@ -8,7 +8,7 @@ public class OrderModel {
     String ProductImg;
     String ProductName;
     String Quantity;
-    public OrderModel(){
+    public ProductModel(){
 
     }
 

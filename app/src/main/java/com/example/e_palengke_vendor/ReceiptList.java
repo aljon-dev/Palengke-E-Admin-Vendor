@@ -1,5 +1,6 @@
 package com.example.e_palengke_vendor;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -50,6 +51,19 @@ public class ReceiptList extends AppCompatActivity {
         adapter = new ReceiptAdapter(this,ReceiptItemList);
 
         ReceiptListOrder.setAdapter(adapter);
+
+
+        adapter.setOnClickListener(new ReceiptAdapter.OnClickItemListener() {
+            @Override
+            public void onClick(ReceiptModel receiptModel) {
+                Intent intent = new Intent(ReceiptList.this, OrderItemListActivity.class);
+                intent.putExtra("ReceiptId",receiptModel.getReceiptID());
+                intent.putExtra("BuyerId",BuyerId);
+                intent.putExtra("UserId",id);
+                startActivity(intent);
+
+            }
+        });
 
         firebaseDatabase.getReference("admin").child(id).child("Buyer").child(BuyerId).child("Order").addValueEventListener(new ValueEventListener() {
             @Override

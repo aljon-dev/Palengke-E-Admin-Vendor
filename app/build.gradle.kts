@@ -42,6 +42,7 @@ dependencies {
     implementation("androidx.navigation:navigation-ui:2.7.7")
     implementation("com.google.firebase:firebase-storage:20.3.0")
     implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
+    implementation("androidx.activity:activity:1.8.0")
     testImplementation("junit:junit:4.13.2")
 
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

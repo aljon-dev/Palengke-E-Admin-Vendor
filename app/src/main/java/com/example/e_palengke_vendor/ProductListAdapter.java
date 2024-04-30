@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.ItemHolder> {
@@ -17,17 +19,23 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     private Context context;
     private ArrayList<ProductModel> ProductList;
 
+    public ProductListAdapter(Context context ,ArrayList<ProductModel> ProductList){
+        this.context = context;
+       this.ProductList = ProductList;
+    }
+
 
     @NonNull
     @Override
-    public ProductListAdapter.ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.productlist,parent,false);
         return new ItemHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProductListAdapter.ItemHolder holder, int position) {
-
+    public void onBindViewHolder(@NonNull  ItemHolder holder, int position) {
+            ProductModel productModel = ProductList.get(position);
+            holder.onBind(productModel);
     }
 
     @Override
@@ -40,8 +48,27 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         TextView productname,price,description,Quantity;
         ImageView productimg;
 
+        String ProductId,Category;
+
         public ItemHolder(@NonNull View itemView) {
             super(itemView);
+
+
+            productname = itemView.findViewById(R.id.productname);
+            price = itemView.findViewById(R.id.productprice);
+            description = itemView.findViewById(R.id.productdescription);
+            Quantity = itemView.findViewById(R.id.productQuantity);
+            productimg = itemView.findViewById(R.id.ItemImg);
+        }
+        public void onBind (ProductModel productModel){
+
+            productname.setText(productModel.getProductName());
+            price.setText(productModel.getPrice());
+            description.setText(productModel.getDescription());
+            Quantity.setText(productModel.getQuantity());
+            ProductId = productModel.getProductId();
+            Category = productModel.getCategory();
+            Glide.with(itemView.getContext()).load(productModel.getProductImg()).into(productimg);
         }
     }
 }

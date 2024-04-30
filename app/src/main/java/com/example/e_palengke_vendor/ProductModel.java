@@ -2,14 +2,24 @@ package com.example.e_palengke_vendor;
 
 public class ProductModel {
 
-    String Description;
-    String Price;
-    String ProductId;
-    String ProductImg;
-    String ProductName;
-    String Quantity;
-    public ProductModel(){
+    private String ProductId;
+    private String Category;
+    private String Description;
+    private String Price;
+    private String ProductImg;
+    private String ProductName;
+    private String Quantity;
 
+    public ProductModel() {
+        // Default constructor required for Firebase
+    }
+
+    public String getProductId() {
+        return ProductId;
+    }
+
+    public String getCategory() {
+        return Category;
     }
 
     public String getDescription() {
@@ -18,10 +28,6 @@ public class ProductModel {
 
     public String getPrice() {
         return Price;
-    }
-
-    public String getProductId() {
-        return ProductId;
     }
 
     public String getProductImg() {

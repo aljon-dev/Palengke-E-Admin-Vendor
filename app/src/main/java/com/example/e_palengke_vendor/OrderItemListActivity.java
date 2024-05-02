@@ -71,8 +71,7 @@ public class OrderItemListActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
 
                      if(which == 0){
-                firebaseDatabase.getReference("admin").child(id).
-                                 child("Buyer").child(BuyerId).child("Order").child(ReceiptId).child(productModel.getOrderId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                firebaseDatabase.getReference("admin").child(id).child("Buyer").child(BuyerId).child("Order").child(ReceiptId).child(productModel.getOrderId()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -83,6 +82,40 @@ public class OrderItemListActivity extends AppCompatActivity {
                                 firebaseDatabase.getReference("Users").child(BuyerId).child("Order").child(productModel.getOrderId()).removeValue();
 
 
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+
+                        });
+
+                        firebaseDatabase.getReference("admin").child(id).child("Products").child(productModel.getProductId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                Map<String,Object> Quantities = (Map<String, Object>) snapshot.getValue();
+                                Object productQty = Quantities.get("Quantity");
+
+                                String CurrentQty = productQty.toString();
+                                String BuyerQty = productModel.getQuantity();
+
+                                int ItemQuantities = Integer.parseInt(CurrentQty) ;
+                                int BuyerQuantities = Integer.parseInt(BuyerQty);
+
+
+                                int newQuantity = ItemQuantities - BuyerQuantities;
+
+
+                                String newProductQty = String.valueOf(newQuantity);
+                                Map<String,Object> UpdateQty = new HashMap<>();
+                                UpdateQty.put("Quantity",newProductQty);
+
+
+
+                                firebaseDatabase.getReference("admin").child(id).child("Products").child(productModel.getProductId()).updateChildren(UpdateQty);
                             }
 
                             @Override
@@ -90,6 +123,7 @@ public class OrderItemListActivity extends AppCompatActivity {
 
                             }
                         });
+
 
 
 

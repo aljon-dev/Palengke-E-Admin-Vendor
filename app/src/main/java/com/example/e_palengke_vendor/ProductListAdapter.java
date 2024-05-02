@@ -19,6 +19,17 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     private Context context;
     private ArrayList<ProductModel> ProductList;
 
+
+    OnItemClickListener onItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+            this.onItemClickListener = onItemClickListener;
+    }
+    public interface  OnItemClickListener{
+
+        void OnClick(ProductModel productModel);
+    }
+
     public ProductListAdapter(Context context ,ArrayList<ProductModel> ProductList){
         this.context = context;
        this.ProductList = ProductList;
@@ -35,6 +46,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     @Override
     public void onBindViewHolder(@NonNull  ItemHolder holder, int position) {
             ProductModel productModel = ProductList.get(position);
+            holder.itemView.setOnClickListener(v-> onItemClickListener.OnClick(ProductList.get(position)));
             holder.onBind(productModel);
     }
 
@@ -48,7 +60,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         TextView productname,price,description,Quantity;
         ImageView productimg;
 
-        String ProductId,Category;
+        String ProductId,Category,OrderId;
 
         public ItemHolder(@NonNull View itemView) {
             super(itemView);
@@ -68,6 +80,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             Quantity.setText(productModel.getQuantity());
             ProductId = productModel.getProductId();
             Category = productModel.getCategory();
+            OrderId = productModel.getOrderId();
             Glide.with(itemView.getContext()).load(productModel.getProductImg()).into(productimg);
         }
     }

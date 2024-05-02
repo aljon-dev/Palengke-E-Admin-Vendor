@@ -10,6 +10,8 @@ public class ProductModel {
     private String ProductName;
     private String Quantity;
 
+    private String OrderId;
+
     public ProductModel() {
         // Default constructor required for Firebase
     }
@@ -40,5 +42,9 @@ public class ProductModel {
 
     public String getQuantity() {
         return Quantity;
+    }
+
+    public String getOrderId() {
+        return OrderId;
     }
 }

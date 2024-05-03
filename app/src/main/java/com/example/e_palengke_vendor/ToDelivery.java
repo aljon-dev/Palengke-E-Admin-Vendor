@@ -62,6 +62,7 @@ public class ToDelivery extends Fragment {
         DeliveryList.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new ToDeliverAdapter(getActivity(),ProductList);
 
+        DeliveryList.setAdapter(adapter);
 
 
 
@@ -77,7 +78,7 @@ public class ToDelivery extends Fragment {
         firebaseDatabase.getReference("Users").child(BuyerId).child("ToDeliver").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                ProductList.clear();
+
                 for (DataSnapshot ds : snapshot.getChildren()){
                     ProductModel productModel = ds.getValue(ProductModel.class);
                     ProductList.add(productModel);
@@ -114,7 +115,7 @@ private void ToReceived(ProductModel productModel){
 
                             firebaseDatabase.getReference("Users").child(BuyerId).child("ToReceived").setValue(ToReceiving);
                             firebaseDatabase.getReference("Users").child(BuyerId).child("ToDeliver").child(productModel.getOrderId()).removeValue();
-                            onStart();
+
 
                         }
 

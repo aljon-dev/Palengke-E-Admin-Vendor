@@ -19,6 +19,16 @@ public class ToDeliverAdapter extends RecyclerView.Adapter<ToDeliverAdapter.Item
     private ArrayList<ProductModel> ToDeliveryListItem;
     private Context context;
 
+    OnItemClickListener onItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public interface  OnItemClickListener {
+         void onClick(ProductModel productModel);
+    }
+
 
 
     public ToDeliverAdapter(Context context,ArrayList<ProductModel> ToDeliveryListItem) {
@@ -40,6 +50,7 @@ public class ToDeliverAdapter extends RecyclerView.Adapter<ToDeliverAdapter.Item
     @Override
     public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
             ProductModel productModel = ToDeliveryListItem.get(position);
+            holder.itemView.setOnClickListener(v-> onItemClickListener.onClick(ToDeliveryListItem.get(position)));
             holder.onBind(productModel);
     }
 

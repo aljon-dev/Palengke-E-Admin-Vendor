@@ -11,10 +11,10 @@ import android.view.ViewGroup;
 
 public class ToReceived extends Fragment {
 
+    String BuyerId;
 
-
-    public ToReceived() {
-        // Required empty public constructor
+    public ToReceived(String BuyerId) {
+        this.BuyerId = BuyerId;
     }
 
 

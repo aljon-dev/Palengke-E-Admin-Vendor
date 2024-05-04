@@ -192,8 +192,6 @@ public class HomeAdmin extends AppCompatActivity  {
 
 
 
-                }else if(items == R.id.NavDelivered){
-
                 }
 
                 else if(items == R.id.LogOut){

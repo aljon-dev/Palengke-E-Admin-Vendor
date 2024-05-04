@@ -11,14 +11,16 @@
 
         <item
             android:id="@+id/NavHome"
-            android:title="Home">
+            android:title="Home"
+            android:icon="@drawable/baseline_home_24">
 
         </item>
 
 
         <item
             android:id="@+id/NavOrder"
-            android:title="Order">
+            android:title="Order"
+            android:icon="@drawable/baseline_bookmark_border_24">
 
         </item>
 
@@ -26,13 +28,15 @@
 
         <item
             android:id="@+id/NavAccount"
-            android:title="Account">
+            android:title="Account"
+            android:icon="@drawable/baseline_manage_accounts_24">
 
         </item>
 
         <item
             android:id="@+id/NavAddProduct"
-            android:title="Add Product">
+            android:title="Add Product"
+            android:icon="@drawable/baseline_assignment_add_24">
 
         </item>
 
@@ -40,22 +44,19 @@
 
         <item
             android:id="@+id/NavHistory"
-            android:title="History">
+            android:title="History"
+            android:icon="@drawable/baseline_history_24">
 
         </item>
 
-        <item
-            android:id="@+id/NavDelivered"
-            android:title="Delivered">
-
-        </item>
     </group>
 
     <group android:id="@+id/group2">
 
         <item
             android:id="@+id/LogOut"
-            android:title="Log Out ">
+            android:title="Log Out "
+            android:icon="@drawable/baseline_logout_24">
 
         </item>
 

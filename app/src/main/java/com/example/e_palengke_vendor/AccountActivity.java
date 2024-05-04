@@ -89,8 +89,8 @@ public class AccountActivity extends AppCompatActivity {
         setContentView(R.layout.activity_account);
 
         //User, Email get Intent from the Previous Activity
-        String id = getIntent().getStringExtra("UserId");
-        String useremail = getIntent().getStringExtra("UserEmail");
+        String Uid = getIntent().getStringExtra("id");
+        String email = getIntent().getStringExtra("email");
         Boolean IsGoogleSignIn = getIntent().getBooleanExtra("IsGoogleSignIn",true);
 
 
@@ -126,10 +126,10 @@ public class AccountActivity extends AppCompatActivity {
 
 
         //Display UserProfile Thru Navigation
-        DisplayUserProfileNavigation(id);
+        DisplayUserProfileNavigation(Uid);
 
         //Display UserData
-        DisplaySellerInfo(id,useremail);
+        DisplaySellerInfo(Uid,email);
 
 
         gcashButton.setOnClickListener(new View.OnClickListener() {
@@ -531,7 +531,7 @@ public class AccountActivity extends AppCompatActivity {
 
     private void ChooseAction(){
 
-        String id = getIntent().getStringExtra("UserId");
+        String Uid = getIntent().getStringExtra("id");
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
@@ -544,13 +544,13 @@ public class AccountActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if(which == 0 ){
-                    ChangeAddress(id);
+                    ChangeAddress(Uid);
                 }else if(which == 1){
                     ChangePassword();
                 }else if(which == 2){
-                    ChangeContact(id);
+                    ChangeContact(Uid);
                 }else if(which == 3){
-                    ChangeUsername(id);
+                    ChangeUsername(Uid);
                 }
             }
         });
@@ -560,7 +560,7 @@ public class AccountActivity extends AppCompatActivity {
 
     private void ChooseActionGoogleSignIn(){
 
-        String id = getIntent().getStringExtra("UserId");
+        String Uid = getIntent().getStringExtra("id");
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
@@ -573,9 +573,9 @@ public class AccountActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if(which == 0 ){
-                    ChangeAddress( id);
+                    ChangeAddress(Uid);
                 }else if(which == 1) {
-                    ChangeContact( id);
+                    ChangeContact(Uid);
                 }
 
 

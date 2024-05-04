@@ -167,15 +167,19 @@ public class HomeAdmin extends AppCompatActivity  {
 
                 }else if(items == R.id.NavAccount){
                     Intent intent = new Intent (HomeAdmin.this, AccountActivity.class);
-                    intent.putExtra("UserId",Uid);
-                    intent.putExtra("UserEmail",email);
+                    intent.putExtra("id",Uid);
+                    intent.putExtra("email",email);
                     intent.putExtra("IsGoogleSignIn",IsGoogleSignIn);
+
+
                     startActivity(intent);
 
                 }else if (items == R.id.NavOrder){
                     Intent intent = new Intent (HomeAdmin.this, orderActivity.class);
-                    intent.putExtra("UserId",Uid);
-                    intent.putExtra("UserEmail",email);
+                    intent.putExtra("id",Uid);
+                    intent.putExtra("email",email);
+                    intent.putExtra("IsGoogleSignIn",IsGoogleSignIn);
+
                     startActivity(intent);
 
                 }
@@ -183,8 +187,9 @@ public class HomeAdmin extends AppCompatActivity  {
                 else if(items == R.id.NavAddProduct){
 
                     Intent intent = new Intent (HomeAdmin.this, AddProduct.class);
-                    intent.putExtra("UserId",Uid);
-                    intent.putExtra("UserEmail",email);
+                    intent.putExtra("id",Uid);
+                    intent.putExtra("email",email);
+                    intent.putExtra("IsGoogleSignIn",IsGoogleSignIn);
                     startActivity(intent);
 
 

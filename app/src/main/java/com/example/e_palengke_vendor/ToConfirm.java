@@ -86,7 +86,7 @@ public class ToConfirm extends Fragment {
                                     firebaseDatabase.getReference("Users").child(BuyerId).child("Order").child(productModel.getOrderId()).removeValue();
 
                                     firebaseDatabase.getReference("admin").child(id).child("Buyer").child(BuyerId).child("Order").child(ReceiptId).child(productModel.getOrderId()).removeValue();
-                                    onStart();
+
                                 }
 
                                 @Override

@@ -16,11 +16,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.Manifest;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -31,6 +37,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -60,12 +67,16 @@ public class AddProduct extends AppCompatActivity {
 
     MaterialButton uploadImage,Addproduct;
 
-    ImageView  imgview;
+    ImageView  imgview,imgbtn, imageprofile;
 
     Bitmap bitmap;
 
     Uri SelectedImageUri;
 
+    DrawerLayout drawer;
+
+    TextView profilename;
+    NavigationView nav;
 
     private static final int REQUEST_CAMERA_PERMISSION = 101;
     private static final int REQUEST_GALLERY_PERMISSION = 102;
@@ -78,7 +89,9 @@ public class AddProduct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_product);
 
-        String id = getIntent().getStringExtra("UserId");
+        String Uid = getIntent().getStringExtra("id");
+        String email = getIntent().getStringExtra("email");
+        Boolean IsGoogleSignIn = getIntent().getBooleanExtra("IsGoogleSignIn",true);
 
         //Firebase storage and Firebase Storage
         database= FirebaseDatabase.getInstance();
@@ -100,6 +113,26 @@ public class AddProduct extends AppCompatActivity {
         //Material Buttons
         uploadImage = findViewById(R.id.pickImg);
         Addproduct = findViewById(R.id.addProduct);
+
+        //imageButton
+        imgbtn = findViewById(R.id.imageBtn);
+        drawer = findViewById(R.id.slidedraw);
+
+
+        //Setting up navigation
+        nav = findViewById(R.id.navigationMenu);
+        View view = nav.getHeaderView(0);
+        profilename = view.findViewById(R.id.nametext);
+        imageprofile = view.findViewById(R.id.photos);
+
+        DisplayProfileInfo(Uid);
+
+        imgbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawer.open();
+            }
+        });
 
 
         productcategory.setOnClickListener(new View.OnClickListener() {
@@ -158,7 +191,7 @@ public class AddProduct extends AppCompatActivity {
                 if(prodname.isEmpty() || prodDesc.isEmpty() || Categories.isEmpty() || productprice.isEmpty() || productQty.isEmpty()){
                     Toast.makeText(AddProduct.this, "Fill the fields", Toast.LENGTH_SHORT).show();
                 }else{
-                    AddProduct(bitmap,prodname,prodDesc,Categories,productprice,productQty,id);
+                    AddProduct(bitmap,prodname,prodDesc,Categories,productprice,productQty, Uid );
                 }
             }
         });
@@ -167,6 +200,23 @@ public class AddProduct extends AppCompatActivity {
 
     }
 
+    private void DisplayProfileInfo(String id ){
+
+        database.getReference("admin").child(id).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Users user = snapshot.getValue(Users.class);
+                profilename.setText(user.getName());
+                Glide.with(AddProduct.this).load(user.getProfile()).into(imageprofile);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(AddProduct.this, "Error", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
 
 
     private void AddProduct(Bitmap bitmaps, String ProdName, String Desc, String Category, String Price, String Qty,String id){

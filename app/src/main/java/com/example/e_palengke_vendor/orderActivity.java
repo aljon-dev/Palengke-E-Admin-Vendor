@@ -39,7 +39,9 @@ public class orderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
 
-        String id = getIntent().getStringExtra("UserId");
+        String id = getIntent().getStringExtra("id");
+        String email = getIntent().getStringExtra("email");
+        Boolean IsGoogleSignIn = getIntent().getBooleanExtra("IsGoogleSignIn",true);
 
         //Setting up firebaseDatabase;
         firebaseDatabase = FirebaseDatabase.getInstance();

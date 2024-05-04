@@ -97,38 +97,38 @@ public class ToDelivery extends Fragment {
 
 private void ToReceived(ProductModel productModel){
 
-        AlertDialog.Builder ToReceived = new AlertDialog.Builder(getActivity());
-        ToReceived.setTitle("Confirm To Received");
+    AlertDialog.Builder ToReceived = new AlertDialog.Builder(getActivity());
+    ToReceived.setTitle("Confirm To Received");
 
-        CharSequence Action [] = {"Confirmed","Cancelled"};
-
-
-        ToReceived.setItems(Action, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                if(which == 0){
-                    firebaseDatabase.getReference("Users").child(BuyerId).child("ToDeliver").child(productModel.getOrderId()).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            Map<String,Object> ToReceiving = (Map<String, Object>) snapshot.getValue();
-
-                            firebaseDatabase.getReference("Users").child(BuyerId).child("ToReceived").setValue(ToReceiving);
-                            firebaseDatabase.getReference("Users").child(BuyerId).child("ToDeliver").child(productModel.getOrderId()).removeValue();
+    CharSequence Action [] = {"Confirmed","Cancelled"};
 
 
-                        }
+    ToReceived.setItems(Action, new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
+            if(which == 0){
+                firebaseDatabase.getReference("Users").child(BuyerId).child("ToDeliver").child(productModel.getOrderId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Map<String,Object> ToReceiving = (Map<String, Object>) snapshot.getValue();
 
-                        }
-                    });
-                }
+                        firebaseDatabase.getReference("Users").child(BuyerId).child("ToReceived").child(productModel.getOrderId()).setValue(ToReceiving);
+                        firebaseDatabase.getReference("Users").child(BuyerId).child("ToDeliver").child(productModel.getOrderId()).removeValue();
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
-        });
+        }
+    });
 
-        ToReceived.show();
+    ToReceived.show();
 
 }
 

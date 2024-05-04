@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/slidedraw"
     tools:context=".AddProduct">
 
 
     <include layout="@layout/addproductcontent"/>
 
     <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigationMenu"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         app:headerLayout="@layout/navigation_header"

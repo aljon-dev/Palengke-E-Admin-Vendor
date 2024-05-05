@@ -28,9 +28,18 @@ import java.util.Set;
 public class ToDelivery extends Fragment {
 
     String BuyerId;
-    public ToDelivery(String BuyerId ) {
+
+    String ReceiptId;
+    String id;
+    public ToDelivery(String BuyerId ,String id,String ReceiptId) {
 
         this.BuyerId = BuyerId;
+
+        this.id = id;
+
+        this.ReceiptId = ReceiptId;
+
+
 
     }
 
@@ -79,10 +88,16 @@ public class ToDelivery extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                for (DataSnapshot ds : snapshot.getChildren()){
-                    ProductModel productModel = ds.getValue(ProductModel.class);
-                    ProductList.add(productModel);
+                if (!snapshot.hasChildren()) {
+                    firebaseDatabase.getReference("admin").child(id).child("Buyer").child(BuyerId).child("Order").child(ReceiptId).removeValue();
+                } else {
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        ProductModel productModel = ds.getValue(ProductModel.class);
+                        ProductList.add(productModel);
+                    }
                 }
+
+
                 adapter.notifyDataSetChanged();
             }
 

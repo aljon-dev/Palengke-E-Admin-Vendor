@@ -68,6 +68,8 @@ public class ReceiptList extends AppCompatActivity {
         firebaseDatabase.getReference("admin").child(id).child("Buyer").child(BuyerId).child("Order").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+
                 for(DataSnapshot ds : snapshot.getChildren()){
                     ReceiptModel receiptModel = ds.getValue(ReceiptModel.class);
                     ReceiptItemList.add(receiptModel);

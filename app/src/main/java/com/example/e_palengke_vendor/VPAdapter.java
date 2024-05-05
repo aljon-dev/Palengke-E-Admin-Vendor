@@ -24,7 +24,7 @@ public class VPAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position){
             case 0: return new ToConfirm(id,ReceiptId,BuyerId);
-            case 1: return  new ToDelivery(BuyerId);
+            case 1: return  new ToDelivery(BuyerId,id,ReceiptId);
             case 2: return  new ToReceived(BuyerId);
             default:return  new ToConfirm(id,ReceiptId,BuyerId);
         }

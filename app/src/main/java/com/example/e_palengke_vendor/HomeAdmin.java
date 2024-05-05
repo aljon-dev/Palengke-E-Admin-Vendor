@@ -255,7 +255,7 @@ public class HomeAdmin extends AppCompatActivity  {
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
                     Toast.makeText(HomeAdmin.this, "Deleted", Toast.LENGTH_SHORT).show();
-                    recreate();
+                  recreate();
                 }else{
                     Toast.makeText(HomeAdmin.this, "Failed To Delete", Toast.LENGTH_SHORT).show();
                 }
@@ -314,7 +314,7 @@ public class HomeAdmin extends AppCompatActivity  {
 
 
                 database.getReference("admin").child(Uid).child("Products").child(id).updateChildren(UpdateProduct);
-                recreate();
+              recreate();
 
             }
         });

@@ -88,14 +88,11 @@ public class ToDelivery extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                if (!snapshot.hasChildren()) {
-                    firebaseDatabase.getReference("admin").child(id).child("Buyer").child(BuyerId).child("Order").child(ReceiptId).removeValue();
-                } else {
                     for (DataSnapshot ds : snapshot.getChildren()) {
                         ProductModel productModel = ds.getValue(ProductModel.class);
                         ProductList.add(productModel);
                     }
-                }
+
 
 
                 adapter.notifyDataSetChanged();

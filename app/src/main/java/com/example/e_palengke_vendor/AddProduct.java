@@ -247,6 +247,7 @@ public class AddProduct extends AppCompatActivity {
                         AddProduct.put("Quantity",Qty);
                         AddProduct.put("ProductImg",Uri);
                         AddProduct.put("ProductId",timestamp);
+                        AddProduct.put("SellerId",id);
 
                         database.getReference("admin").child(id).child("Products").child(timestamp).setValue(AddProduct).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override

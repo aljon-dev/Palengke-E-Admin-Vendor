@@ -111,7 +111,7 @@ private void ToReceived(ProductModel productModel){
     AlertDialog.Builder ToReceived = new AlertDialog.Builder(getActivity());
     ToReceived.setTitle("Confirm To Received");
 
-    CharSequence Action [] = {"Confirmed","Cancelled"};
+    CharSequence Action [] = {"Confirmed"};
 
 
     ToReceived.setItems(Action, new DialogInterface.OnClickListener() {
@@ -127,14 +127,15 @@ private void ToReceived(ProductModel productModel){
                         firebaseDatabase.getReference("Users").child(BuyerId).child("ToReceived").child(productModel.getOrderId()).setValue(ToReceiving);
                         firebaseDatabase.getReference("Users").child(BuyerId).child("ToDeliver").child(productModel.getOrderId()).removeValue();
 
-
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
 
                     }
                 });
+            }else if (which == 1 ){
+
+
             }
         }
     });

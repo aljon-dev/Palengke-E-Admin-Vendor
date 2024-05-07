@@ -28,13 +28,7 @@ import java.util.Map;
 
 public class OrderItemListActivity extends AppCompatActivity {
 
-    FirebaseDatabase firebaseDatabase;
 
-    RecyclerView productListView;
-
-    ProductListAdapter adapter;
-
-    ArrayList<ProductModel> ProductItems;
 
     VPAdapter vpAdapter;
     TabLayout tabLayout;

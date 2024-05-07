@@ -134,6 +134,28 @@ public class ToConfirm extends Fragment {
 
                         } else if (which == 1) {
 
+
+                            firebaseDatabase.getReference("admin").child(id).child("Buyer").child(BuyerId).child("Order").child(productModel.getOrderId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                    Map<String, Object> ToDelivery = (Map<String, Object>) snapshot.getValue();
+
+                                    firebaseDatabase.getReference("Users").child(BuyerId).child("Reject").child(productModel.getOrderId()).updateChildren(ToDelivery);
+                                    firebaseDatabase.getReference("Users").child(BuyerId).child("Order").child(productModel.getOrderId()).removeValue();
+
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+
+
+
+                            });
+
                         }
 
 

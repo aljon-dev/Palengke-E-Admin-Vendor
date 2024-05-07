@@ -97,7 +97,6 @@ public class orderActivity extends AppCompatActivity {
         });
 
 
-
         //Display Buyer List
         firebaseDatabase.getReference("admin").child(id).child("Buyer").addValueEventListener(new ValueEventListener() {
             @Override

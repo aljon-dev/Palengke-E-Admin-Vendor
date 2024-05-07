@@ -10,23 +10,22 @@ public class VPAdapter extends FragmentStateAdapter {
 
     String id;
     String BuyerId;
-    String ReceiptId;
 
-    public VPAdapter(@NonNull FragmentActivity fragmentActivity, String id, String BuyerId, String ReceiptId) {
+    public VPAdapter(@NonNull FragmentActivity fragmentActivity, String id, String BuyerId ) {
         super(fragmentActivity);
         this.id = id;
         this.BuyerId = BuyerId;
-        this.ReceiptId = ReceiptId;
+
     }
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
         switch (position){
-            case 0: return new ToConfirm(id,ReceiptId,BuyerId);
-            case 1: return  new ToDelivery(BuyerId,id,ReceiptId);
+            case 0: return new ToConfirm(id,BuyerId);
+            case 1: return  new ToDelivery(BuyerId,id);
             case 2: return  new ToReceived(BuyerId);
-            default:return  new ToConfirm(id,ReceiptId,BuyerId);
+            default:return  new ToConfirm(id,BuyerId);
         }
     }
 

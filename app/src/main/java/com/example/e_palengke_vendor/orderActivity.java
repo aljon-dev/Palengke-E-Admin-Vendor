@@ -89,7 +89,7 @@ public class orderActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new BuyerAdapter.onItemClickListener() {
             @Override
             public void onItemClick(BuyerModel buyerModel) {
-                Intent intent = new Intent(orderActivity.this,ReceiptList.class);
+                Intent intent = new Intent(orderActivity.this,OrderItemListActivity.class);
                 intent.putExtra("UserId",id);
                 intent.putExtra("BuyerId",buyerModel.getBuyerId());
                 startActivity(intent);
@@ -105,7 +105,6 @@ public class orderActivity extends AppCompatActivity {
 
 
                 for(DataSnapshot ds : snapshot.getChildren()){
-
                     BuyerModel buyerModel = ds.getValue(BuyerModel.class);
                     BuyerItemList.add(buyerModel);
                 }

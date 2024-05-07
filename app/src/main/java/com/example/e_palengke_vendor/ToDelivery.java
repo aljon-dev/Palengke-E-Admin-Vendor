@@ -29,15 +29,14 @@ public class ToDelivery extends Fragment {
 
     String BuyerId;
 
-    String ReceiptId;
     String id;
-    public ToDelivery(String BuyerId ,String id,String ReceiptId) {
+    public ToDelivery(String BuyerId ,String id) {
 
         this.BuyerId = BuyerId;
 
         this.id = id;
 
-        this.ReceiptId = ReceiptId;
+
 
 
 

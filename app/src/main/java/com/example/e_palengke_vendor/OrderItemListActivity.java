@@ -50,12 +50,11 @@ public class OrderItemListActivity extends AppCompatActivity {
 
         //Sustaining Value from the previous class
         String id = getIntent().getStringExtra("UserId");
-        String ReceiptId = getIntent().getStringExtra("ReceiptId");
         String BuyerId = getIntent().getStringExtra("BuyerId");
 
         tabLayout = findViewById(R.id.tabLayoutPurchaseOrder);
         viewPager2 = findViewById(R.id.vpPurchaseOrder);
-        vpAdapter = new VPAdapter(this,id,BuyerId,ReceiptId);
+        vpAdapter = new VPAdapter(this,id,BuyerId);
 
         viewPager2.setAdapter(vpAdapter);
 

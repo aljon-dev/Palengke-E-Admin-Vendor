@@ -27,11 +27,11 @@ import java.util.Map;
 public class ToConfirm extends Fragment {
 
 
-    String id, ReceiptId, BuyerId;
+    String id,  BuyerId;
 
-    public ToConfirm(String id, String ReceiptId,String BuyerId) {
+    public ToConfirm(String id,String BuyerId) {
         this.id = id;
-        this.ReceiptId = ReceiptId;
+
         this.BuyerId = BuyerId;
 
     }
@@ -75,7 +75,8 @@ public class ToConfirm extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
 
                         if (which == 0) {
-                            firebaseDatabase.getReference("admin").child(id).child("Buyer").child(BuyerId).child("Order").child(ReceiptId).child(productModel.getOrderId()).addListenerForSingleValueEvent(new ValueEventListener() {
+
+                            firebaseDatabase.getReference("admin").child(id).child("Buyer").child(BuyerId).child("Order").child(productModel.getOrderId()).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -85,7 +86,7 @@ public class ToConfirm extends Fragment {
 
                                     firebaseDatabase.getReference("Users").child(BuyerId).child("Order").child(productModel.getOrderId()).removeValue();
 
-                                    firebaseDatabase.getReference("admin").child(id).child("Buyer").child(BuyerId).child("Order").child(ReceiptId).child(productModel.getOrderId()).removeValue();
+
 
                                 }
 
@@ -104,6 +105,7 @@ public class ToConfirm extends Fragment {
 
                                     Map<String, Object> Quantities = (Map<String, Object>) snapshot.getValue();
                                     Object productQty = Quantities.get("Quantity");
+
 
                                     String CurrentQty = productQty.toString();
                                     String BuyerQty = productModel.getQuantity();
@@ -144,7 +146,7 @@ public class ToConfirm extends Fragment {
         });
 
 
-        firebaseDatabase.getReference("admin").child(id).child("Buyer").child(BuyerId).child("Order").child(ReceiptId).addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseDatabase.getReference("admin").child(id).child("Buyer").child(BuyerId).child("Order").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 try {

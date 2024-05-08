@@ -63,6 +63,7 @@ public class ToReceived extends Fragment {
                     ToReceivedItemList.add(productModel);
 
                 }
+                adapter.notifyDataSetChanged();
             }
 
             @Override

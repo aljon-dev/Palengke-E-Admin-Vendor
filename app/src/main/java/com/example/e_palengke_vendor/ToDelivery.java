@@ -81,27 +81,9 @@ public class ToDelivery extends Fragment {
           }
       });
 
+fetchData();
 
 
-        firebaseDatabase.getReference("Users").child(BuyerId).child("ToDeliver").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                    for (DataSnapshot ds : snapshot.getChildren()) {
-                        ProductModel productModel = ds.getValue(ProductModel.class);
-                        ProductList.add(productModel);
-                    }
-
-
-
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
 
         return view ;
     }
@@ -127,6 +109,7 @@ private void ToReceived(ProductModel productModel){
                         firebaseDatabase.getReference("Users").child(BuyerId).child("ToReceived").child(productModel.getOrderId()).setValue(ToReceiving);
                         firebaseDatabase.getReference("Users").child(BuyerId).child("ToDeliver").child(productModel.getOrderId()).removeValue();
 
+                        refreshData ();
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
@@ -142,6 +125,33 @@ private void ToReceived(ProductModel productModel){
 
     ToReceived.show();
 
+}
+
+private void refreshData (){
+        ProductList.clear();
+        adapter.notifyDataSetChanged();
+        fetchData();
+
+}
+
+private void fetchData(){
+
+        firebaseDatabase.getReference("Users").child(BuyerId).child("ToDeliver").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot ds: snapshot.getChildren()){
+                    ProductModel productModel = ds.getValue(ProductModel.class);
+                    ProductList.add(productModel);
+
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 }
 
 

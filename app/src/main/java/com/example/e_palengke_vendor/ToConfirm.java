@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class ToConfirm extends Fragment {
+public class ToConfirm extends Fragment  {
 
 
     String id,  BuyerId;
@@ -79,12 +79,23 @@ public class ToConfirm extends Fragment {
                             firebaseDatabase.getReference("admin").child(id).child("Buyer").child(BuyerId).child("Order").child(productModel.getOrderId()).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    try{
 
-                                    Map<String, Object> ToDelivery = (Map<String, Object>) snapshot.getValue();
+                                        Map<String, Object> ToDelivery = (Map<String, Object>) snapshot.getValue();
 
-                                    firebaseDatabase.getReference("Users").child(BuyerId).child("ToDeliver").child(productModel.getOrderId()).updateChildren(ToDelivery);
+                                        firebaseDatabase.getReference("Users").child(BuyerId).child("ToDeliver").child(productModel.getOrderId()).updateChildren(ToDelivery);
 
-                                    firebaseDatabase.getReference("Users").child(BuyerId).child("Order").child(productModel.getOrderId()).removeValue();
+                                        firebaseDatabase.getReference("Users").child(BuyerId).child("Order").child(productModel.getOrderId()).removeValue();
+
+                                        firebaseDatabase.getReference("admin").child(id).child("Buyer").child(BuyerId).child("Order").child(productModel.getOrderId()).removeValue();
+                                        refreshFragment();
+                                    }catch(Exception e){
+                                        e.printStackTrace();
+                                        Toast.makeText(getActivity(), "PUTANG INA ", Toast.LENGTH_SHORT).show();
+
+                                    }
+
+
 
                                 }
 
@@ -130,6 +141,9 @@ public class ToConfirm extends Fragment {
                             });
 
 
+
+
+
                         } else if (which == 1) {
 
 
@@ -141,6 +155,7 @@ public class ToConfirm extends Fragment {
 
                                     firebaseDatabase.getReference("Users").child(BuyerId).child("Reject").child(productModel.getOrderId()).updateChildren(ToDelivery);
                                     firebaseDatabase.getReference("Users").child(BuyerId).child("Order").child(productModel.getOrderId()).removeValue();
+
 
 
                                 }
@@ -166,6 +181,19 @@ public class ToConfirm extends Fragment {
         });
 
 
+       fetchData();
+
+        return view;
+    }
+
+
+    public void refreshFragment() {
+        ProductItems.clear(); // Clear the existing data
+        adapter.notifyDataSetChanged(); // Notify adapter of changes (optional)
+        fetchData(); // Fetch updated data
+    }
+
+    private void fetchData() {
         firebaseDatabase.getReference("admin").child(id).child("Buyer").child(BuyerId).child("Order").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -177,7 +205,7 @@ public class ToConfirm extends Fragment {
                 } catch (Exception e) {
                     Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
                 }
-                adapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged(); // Notify adapter of changes
             }
 
             @Override
@@ -185,10 +213,8 @@ public class ToConfirm extends Fragment {
 
             }
         });
-
-
-        return view;
     }
+
 }
 
 

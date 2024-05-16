@@ -11,6 +11,10 @@ public class Users {
 
     String address;
 
+    String ratingbar;
+
+    String NumberOfRates;
+
 
 
     public Users(){
@@ -58,5 +62,19 @@ public class Users {
         this.address = address;
     }
 
+    public String getRatingbar() {
+        return ratingbar;
+    }
 
+    public void setRatingbar(String ratingbar) {
+        this.ratingbar = ratingbar;
+    }
+
+    public String getNumberOfRates() {
+        return NumberOfRates;
+    }
+
+    public void setNumberOfRates(String numberOfRates) {
+        NumberOfRates = numberOfRates;
+    }
 }

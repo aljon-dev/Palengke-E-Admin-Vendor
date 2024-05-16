@@ -199,6 +199,8 @@ public class MainActivity extends AppCompatActivity {
                             users.setName(user.getDisplayName());
                             users.setProfile(String.valueOf(user.getPhotoUrl()));
                             users.setAddress("");
+                            users.setRatingbar("0");
+                            users.setNumberOfRates("0");
 
                             database.getReference("admin").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override

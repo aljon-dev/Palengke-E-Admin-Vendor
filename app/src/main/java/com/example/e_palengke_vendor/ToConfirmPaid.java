@@ -27,12 +27,7 @@ public class ToConfirmPaid extends Fragment {
 
     String id,  BuyerId;
 
-    public ToConfirmPaid() {
-        this.id = id;
 
-        this.BuyerId = BuyerId;
-
-    }
 
 
     // TODO: Rename and change types and number of parameters
@@ -44,6 +39,12 @@ public class ToConfirmPaid extends Fragment {
 
     ArrayList<ProductModel> ProductItems;
 
+    public ToConfirmPaid(String id, String buyerId) {
+
+        this.id = id;
+
+        this.BuyerId = BuyerId;
+    }
 
 
     @Override
@@ -82,11 +83,11 @@ public class ToConfirmPaid extends Fragment {
 
                                         Map<String, Object> ToDelivery = (Map<String, Object>) snapshot.getValue();
 
-                                        firebaseDatabase.getReference("Users").child(BuyerId).child("ToDeliver").child(productModel.getOrderId()).updateChildren(ToDelivery);
+                                        firebaseDatabase.getReference("Users").child(BuyerId).child("ToDeliverPaid").child(productModel.getOrderId()).updateChildren(ToDelivery);
 
-                                        firebaseDatabase.getReference("Users").child(BuyerId).child("Order").child(productModel.getOrderId()).removeValue();
+                                        firebaseDatabase.getReference("Users").child(BuyerId).child("OrderPaid").child(productModel.getOrderId()).removeValue();
 
-                                        firebaseDatabase.getReference("admin").child(id).child("Buyer").child(BuyerId).child("Order").child(productModel.getOrderId()).removeValue();
+                                        firebaseDatabase.getReference("admin").child(id).child("Buyer").child(BuyerId).child("OrderPaid").child(productModel.getOrderId()).removeValue();
                                         refreshFragment();
                                     }catch(Exception e){
                                         e.printStackTrace();
@@ -153,7 +154,7 @@ public class ToConfirmPaid extends Fragment {
                                     Map<String, Object> ToDelivery = (Map<String, Object>) snapshot.getValue();
 
                                     firebaseDatabase.getReference("Users").child(BuyerId).child("Reject").child(productModel.getOrderId()).updateChildren(ToDelivery);
-                                    firebaseDatabase.getReference("Users").child(BuyerId).child("Order").child(productModel.getOrderId()).removeValue();
+                                    firebaseDatabase.getReference("Users").child(BuyerId).child("OrderPaid").child(productModel.getOrderId()).removeValue();
 
 
 

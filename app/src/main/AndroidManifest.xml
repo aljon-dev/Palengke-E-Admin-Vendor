@@ -24,6 +24,9 @@
         android:theme="@style/Theme.EPalengke_Vendor"
         tools:targetApi="34">
         <activity
+            android:name=".OrderItemListPaid"
+            android:exported="false" />
+        <activity
             android:name=".OrderItemListActivity"
             android:exported="false" />
         <activity

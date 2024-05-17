@@ -1,5 +1,6 @@
 package com.example.e_palengke_vendor;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -89,10 +91,30 @@ public class orderActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new BuyerAdapter.onItemClickListener() {
             @Override
             public void onItemClick(BuyerModel buyerModel) {
-                Intent intent = new Intent(orderActivity.this,OrderItemListActivity.class);
-                intent.putExtra("UserId",id);
-                intent.putExtra("BuyerId",buyerModel.getBuyerId());
-                startActivity(intent);
+                AlertDialog.Builder Option = new AlertDialog.Builder(orderActivity.this);
+                CharSequence Action [] = {"Cash on Delivery", "Paid Delivery"};
+
+                Option.setTitle("Choose");
+
+
+                Option.setItems(Action, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(which == 0){
+                            Intent intent = new Intent(orderActivity.this,OrderItemListActivity.class);
+                            intent.putExtra("UserId",id);
+                            intent.putExtra("BuyerId",buyerModel.getBuyerId());
+                            startActivity(intent);
+                        }else if(which == 1){
+                            Intent intent = new Intent(orderActivity.this,OrderItemListPaid.class);
+                            intent.putExtra("UserId",id);
+                            intent.putExtra("BuyerId",buyerModel.getBuyerId());
+                            startActivity(intent);
+                        }
+                    }
+
+                });
+                Option.show();
             }
         });
 

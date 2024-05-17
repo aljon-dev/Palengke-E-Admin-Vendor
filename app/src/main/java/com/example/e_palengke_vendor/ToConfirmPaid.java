@@ -76,7 +76,7 @@ public class ToConfirmPaid extends Fragment {
 
                         if (which == 0) {
 
-                            firebaseDatabase.getReference("admin").child(id).child("Buyer").child(BuyerId).child("Order").child(productModel.getOrderId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            firebaseDatabase.getReference("admin").child(id).child("Buyer").child(BuyerId).child("OrderPaid").child(productModel.getOrderId()).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     try{

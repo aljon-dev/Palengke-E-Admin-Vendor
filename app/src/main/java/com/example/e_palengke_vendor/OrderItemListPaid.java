@@ -26,9 +26,6 @@ public class OrderItemListPaid extends AppCompatActivity {
         setContentView(R.layout.activity_order_item_list_paid);
 
 
-
-
-
         //Sustaining Value from the previous class
         String id = getIntent().getStringExtra("UserId");
         String BuyerId = getIntent().getStringExtra("BuyerId");

@@ -53,7 +53,7 @@ public class ToReceivePaid extends Fragment {
 
         ReceiveItemList.setAdapter(adapter);
 
-        firebaseDatabase.getReference("Users").child(BuyerId).child("ToReceived").addValueEventListener(new ValueEventListener() {
+        firebaseDatabase.getReference("Users").child(BuyerId).child("ToReceivedPaid").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot ds: snapshot.getChildren()){

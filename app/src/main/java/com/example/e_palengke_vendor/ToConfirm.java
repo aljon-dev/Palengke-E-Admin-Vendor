@@ -91,7 +91,7 @@ public class ToConfirm extends Fragment  {
                                         refreshFragment();
                                     }catch(Exception e){
                                         e.printStackTrace();
-                                        Toast.makeText(getActivity(), "PUTANG INA ", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
 
                                     }
 

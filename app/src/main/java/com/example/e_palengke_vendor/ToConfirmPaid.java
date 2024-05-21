@@ -30,7 +30,7 @@ public class ToConfirmPaid extends Fragment {
 
 
 
-    // TODO: Rename and change types and number of parameters
+
 
     FirebaseDatabase firebaseDatabase;
     RecyclerView productListView;
@@ -39,7 +39,7 @@ public class ToConfirmPaid extends Fragment {
 
     ArrayList<ProductModel> ProductItems;
 
-    public ToConfirmPaid(String id, String buyerId) {
+    public ToConfirmPaid(String id, String BuyerId) {
 
         this.id = id;
 
@@ -186,7 +186,7 @@ public class ToConfirmPaid extends Fragment {
         return view;
     }
     private void fetchData() {
-        firebaseDatabase.getReference("admin").child(id).child("Buyer").child(BuyerId).child("Order").addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseDatabase.getReference("admin").child(id).child("Buyer").child(BuyerId).child("OrderPaid").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 try {

@@ -106,10 +106,15 @@ public class orderActivity extends AppCompatActivity {
                             intent.putExtra("BuyerId",buyerModel.getBuyerId());
                             startActivity(intent);
                         }else if(which == 1){
-                            Intent intent = new Intent(orderActivity.this,OrderItemListPaid.class);
-                            intent.putExtra("UserId",id);
-                            intent.putExtra("BuyerId",buyerModel.getBuyerId());
-                            startActivity(intent);
+                            try{
+                                Intent intent = new Intent(orderActivity.this,OrderItemListPaid.class);
+                                intent.putExtra("UserId",id);
+                                intent.putExtra("BuyerId",buyerModel.getBuyerId());
+                                startActivity(intent);
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+
                         }
                     }
 

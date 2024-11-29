@@ -29,9 +29,7 @@
         <activity
             android:name=".OrderItemListActivity"
             android:exported="false" />
-        <activity
-            android:name=".ReceiptList"
-            android:exported="false" />
+
         <activity
             android:name=".orderActivity"
             android:exported="false" />
